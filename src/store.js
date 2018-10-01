@@ -9,46 +9,67 @@ Vue.use(Vuex);
 axios.defaults.baseURL = 'http://localhost:8080/api';
 export default new Vuex.Store({
     state: {
-        token: localStorage.getItem('access_token') || null
+        token: localStorage.getItem('access_token') || null,
+        authUser: null
     },
     getters: {
         loggedIn(state) {
             return state.token !== null;
+        },
+        authUser(state) {
+            return state.authUser
         }
     },
     mutations: {
         retrieveToken(state, token) {
-            state.token = token;
+            state.token = token
         },
         destroyToken(state) {
-            state.token = null;
+            state.token = null
+        },
+        authenticateUser(state, authUser) {
+            state.authUser = authUser
         }
     },
     actions: {
         destroyToken(context) {
             return new Promise((resolve, reject) => {
-                localStorage.removeItem('access_token');
-                context.commit('destroyToken');
-                resolve();
+                localStorage.removeItem('access_token')
+                context.commit('destroyToken')
+                resolve()
             });
-        },
+		},
         retrieveToken(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('/authenticate', {
+                return axios.post('/authenticate', {
                         username: credentials.username,
                         password: credentials.password
                     })
                     .then(response => {
                         const token = response.data.id_token;
-                        localStorage.setItem('access_token', token);
-                        context.commit('retrieveToken', token);
-                        resolve(response);
+                        localStorage.setItem('access_token', token)
+						context.commit('retrieveToken', token)
+						resolve()
                     })
                     .catch(error => {
                         console.log(error);
-                        reject(error);
+                        reject(error)
                     });
             });
-        }
+		},
+		authenticateUser(context) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+			return new Promise((resolve, reject) => {
+				axios.get('/account')
+				.then(response => {
+					context.commit('authenticateUser', response.data)
+					resolve()
+				})
+				.catch(error => {
+					console.log(error)
+					reject()
+				})
+			});
+		}
     }
 });

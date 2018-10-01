@@ -20,52 +20,50 @@
 	</form>
 </template>
 <style lang="scss">
-	.login-form {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-	}
-	.login-form div {
-		display: flex;
-		flex-direction: row;
-	}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.login-form div {
+    display: flex;
+    flex-direction: row;
+}
 </style>
 <script>
-	export default {
-		data: () => {
-			return {
-				fields: {
-					username: {
-						value: "",
-						feedback: ""
-					},	
-					password: {
-						value: "",
-						feedback: ""
-					}	
-				}
-			};
-		},
-		created () {
-
-		},
-		methods: {
-			performlogin() {
-				console.log(this.fields.username.value+'  --  '+this.fields.password.value)
-				this.$store.dispatch('retrieveToken', {
-					username: this.fields.username.value,
-					password: this.fields.password.value
-				})
-				.then(response => {
-					this.$router.push({ name: 'dashboard' })
-				})
-				.catch(error => {
-					console.log(error)
-				});
-			}
-		}
-	}
+export default {
+    data: () => {
+        return {
+            fields: {
+                username: {
+                    value: '',
+                    feedback: ''
+                },
+                password: {
+                    value: '',
+                    feedback: ''
+                }
+            }
+        };
+    },
+    created() {},
+    methods: {
+        performlogin() {
+            this.$store
+                .dispatch('retrieveToken', {
+                    username: this.fields.username.value,
+                    password: this.fields.password.value
+                })
+                .then(response => {
+                    this.$router.push({ name: 'dashboard' });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+};
 </script>
 
 
