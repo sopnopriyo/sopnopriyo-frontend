@@ -10,15 +10,19 @@ axios.defaults.baseURL = 'http://localhost:8080/api';
 export default new Vuex.Store({
     state: {
         token: localStorage.getItem('access_token') || null,
-        authUser: null
+		authUser: null,
+		userList: null,
     },
     getters: {
         loggedIn(state) {
-            return state.token !== null;
+            return state.token !== null
         },
         authUser(state) {
             return state.authUser
-        }
+		},
+		userList(state) {
+			return state.userList
+		}
     },
     mutations: {
         retrieveToken(state, token) {
@@ -29,7 +33,10 @@ export default new Vuex.Store({
         },
         authenticateUser(state, authUser) {
             state.authUser = authUser
-        }
+		},
+		fetchUsers(state, userList) {
+			state.userList = userList
+		} 
     },
     actions: {
         destroyToken(context) {
@@ -63,6 +70,24 @@ export default new Vuex.Store({
 				axios.get('/account')
 				.then(response => {
 					context.commit('authenticateUser', response.data)
+					resolve()
+				})
+				.catch(error => {
+					console.log(error)
+					reject()
+				})
+			});
+		},
+		fetchUsers(context) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+			return new Promise((resolve, reject) => {
+				// if (context.state.userList !=null) {
+				// 	resolve();
+				// 	return;
+				// }
+				axios.get('/users')
+				.then(response => {
+					context.commit('fetchUsers', response.data)
 					resolve()
 				})
 				.catch(error => {

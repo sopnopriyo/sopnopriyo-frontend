@@ -13,33 +13,21 @@ const routes = [
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
 	},
 	{
 		path: '/login',
 		name: 'login',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
 	},
 	{
 		path: '/logout',
 		name: 'logout',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "logout" */ './views/Logout.vue')
 	},
 	{
 		path: '/manageuser',
 		name: 'manageuser',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "manageuser" */ './views/ManageUser.vue'),
 		meta: { requiresAuth: true , adminAuth:true , userAuth : false}
 	},
@@ -47,26 +35,24 @@ const routes = [
 		path: '/manageblog',
 		name: 'manageblog',
 		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "manageblog" */ './views/ManageBlog.vue'),
 		meta: { requiresAuth: true , adminAuth:true , userAuth : true}
 	},
 	{
+		path: '/manageportfolio',
+		name: 'manageportfolio',
+		component: () => import(/* webpackChunkName: "manageportfolio" */ './views/ManagePortfolio.vue'),
+		meta: { requiresAuth: true , adminAuth:true , userAuth : false}
+	},
+	{
 		path: '/managecontact',
 		name: 'managecontact',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "managecontact" */ './views/ManageContact.vue'),
 		meta: { requiresAuth: true , adminAuth:true , userAuth : false}
 	},
 	{
 		path: '/dashboard',
 		name: 'dashboard',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
 		meta: { requiresAuth: true , adminAuth:true , userAuth : true}
 	},
