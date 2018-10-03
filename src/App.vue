@@ -1,78 +1,12 @@
 <template>
-  <div id="app" v-if="!loggedIn">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-	 	<router-link to="/about">About</router-link> |
-		<router-link to="/login">Login</router-link> |
-	</div>
-    <router-view/>
-  </div>
-  <v-app
-    id="inspire"
-    dark
-	v-else
-  >
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      clipped
-      app
-    >
-      <v-list dense>
-        <v-list-tile v-for="item in items" :key="item.text" :to="item.path">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>
-              {{ item.text }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar
-      color="red"
-      dense
-      fixed
-      clipped-left
-      app
-    >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title class="mr-5 align-center">
-        <span class="title">Sopnopriyo</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-	  <v-layout justify-end row>
-		  <v-btn to="/logout">To</v-btn>
-      </v-layout>
-    </v-toolbar>
-    <v-content>
-		<router-view></router-view>
-    </v-content>
-  </v-app>
+	<frontend v-if="!loggedIn"></frontend>
+  <admin-panel v-else></admin-panel>
 </template>
-
 <style lang="scss">
-	#app {
-		font-family: 'Avenir', Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-	}
-	#nav {
-		padding: 30px;
-		a {
-			font-weight: bold;
-			color: #2c3e50;
-			&.router-link-exact-active {
-				color: #42b983;
-			}
-		}
-	}
 </style>
 <script>
+import Frontend from "./layout/Frontend"
+import AdminPanel from "./layout/AdminPanel"
 export default {
     data: () => ({
         drawer: true,
@@ -91,6 +25,10 @@ export default {
         loggedIn() {
             return this.$store.getters.loggedIn;
         }
-    }
+	},
+	components: {
+		Frontend,
+		AdminPanel
+	}
 };
 </script>
