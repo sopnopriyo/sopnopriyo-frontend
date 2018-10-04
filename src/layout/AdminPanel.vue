@@ -34,9 +34,10 @@
         <span class="title">Sopnopriyo</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-	  <v-layout justify-end row>
-		  <v-btn to="/logout">Logout</v-btn>
-      </v-layout>
+	  <v-toolbar-items>
+		  <v-btn    color="red"
+      dense to="/logout" >Logout</v-btn>
+	  </v-toolbar-items>
     </v-toolbar>
     <v-content>
 		<router-view></router-view>
@@ -55,7 +56,8 @@ export default {
             { icon: 'fas fa-user', path: 'manageuser', text: 'Users' },
             { icon: 'fab fa-blogger', path: 'manageblog', text: 'Blog' },
             { icon: 'fas fa-archive', path: 'manageportfolio', text: 'Portfolio' },
-            { icon: 'fas fa-envelope', path: 'managecontact', text: 'Message' }
+            { icon: 'fas fa-envelope', path: 'managecontact', text: 'Message' },
+			{ icon: 'far fa-laptop-code', path: 'apidefination', text: 'API Specification' },
         ]
     })
 };

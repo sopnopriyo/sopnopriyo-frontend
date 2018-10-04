@@ -1,17 +1,93 @@
 <template>
-	<div id="app">
-		<div id="nav">
-		<router-link to="/">Home</router-link> |
-			<router-link to="/about">About</router-link> |
-			<router-link to="/login">Login</router-link> |
-		</div>
-    <router-view/>
-  </div>
+    <v-app>
+        <v-toolbar color="purple" dense
+      fixed
+      clipped-left
+      app>
+            <v-toolbar-title>
+                <router-link to="/"  class="white--text" tag="span" style="cursor: pointer">
+                    Sopnopriyo
+                </router-link>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+                <v-btn v-for="item in items" :key="item.path" :to="item.path" flat ripple class="white--text" >{{ item.text}}</v-btn>
+            </v-toolbar-items>
+        </v-toolbar>
+        <v-content>
+            <v-container fluid>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
+        <v-footer dark height="auto" app>
+            <v-card class="flex" flat tile>
+                <v-card-title class="purple lighten-1 white--text text-xs-center justify-center">
+                    <v-btn v-for="socialLink in socialLinks" target="blank" :href="socialLink.link" :key="socialLink.icon" class="mx-3" dark icon>
+                        <v-icon size="24px">{{ socialLink.icon }}</v-icon>
+                    </v-btn>
+                </v-card-title>
+                <v-card-actions class="purple darken-3 justify-center">
+                    &copy;2018 — <strong>Sopnopriyo</strong>
+                </v-card-actions>
+            </v-card>
+        </v-footer>
+    </v-app>
 </template>
 <style lang="sass">
 </style>
 <script>
-export default {};
+export default {
+    data: () => ({
+        items: [{
+                path: '/blog',
+                text: 'Blog'
+            },
+            {
+                path: '/about',
+                text: 'About'
+            },
+            {
+                path: '/contact',
+                text: 'Contact'
+            },
+            {
+                path: '/login',
+                text: 'login'
+			},
+		],
+		socialLinks: [
+			{
+				icon: 'fab fa-facebook',
+				link: 'https://facebook.com/sopnopriyoo/'
+			},
+			{
+				icon: 'fab fa-instagram',
+				link: 'https://www.instagram.com/sopno.priyo/'
+			},
+			{
+				icon: 'fab fa-twitter',
+				link: 'https://twitter.com/sopnopriyo'
+			},
+			{
+				icon: 'fab fa-linkedin',
+				link: 'https://www.linkedin.com/in/sopnopriyo/'
+			},
+			{
+				icon: 'fab fa-github',
+				link: 'https://github.com/sopnopriyo/sopnopriyo'
+			},
+			{
+				icon: 'fab fa-stack-overflow',
+				link: 'https://stackoverflow.com/users/4778904/shahin-alam'
+			}
+      	]
+    }),
+    computed: {
+        loggedIn() {
+            return this.$store.getters.loggedIn;
+        }
+    },
+};
 </script>
 
 
