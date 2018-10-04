@@ -134,11 +134,12 @@ export default {
 
     created() {
         this.initialize();
-        this.$store.dispatch('fetchUsers');
     },
 
     methods: {
-        initialize() {},
+        initialize() {
+			this.$store.dispatch('fetchUsers');
+		},
 
         editItem(item) {
             this.editedIndex = this.userList.indexOf(item);

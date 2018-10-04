@@ -1,28 +1,29 @@
 <template>
     <v-app>
-        <v-toolbar color="purple" dense
-      fixed
-      clipped-left
-      app>
+        <v-toolbar color="purple" dense fixed clipped-left app>
             <v-toolbar-title>
-                <router-link to="/"  class="white--text" tag="span" style="cursor: pointer">
+                <router-link to="/" class="white--text" tag="span" style="cursor: pointer">
                     Sopnopriyo
                 </router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-                <v-btn v-for="item in items" :key="item.path" :to="item.path" flat ripple class="white--text" >{{ item.text}}</v-btn>
+                <v-btn v-for="item in items" :key="item.path" :to="item.path" flat ripple class="white--text">{{
+                    item.text}}</v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-content>
             <v-container fluid>
-                <router-view></router-view>
+				<keep-alive>
+                	<router-view></router-view>
+				</keep-alive>
             </v-container>
         </v-content>
         <v-footer dark height="auto" app>
             <v-card class="flex" flat tile>
                 <v-card-title class="purple lighten-1 white--text text-xs-center justify-center">
-                    <v-btn v-for="socialLink in socialLinks" target="blank" :href="socialLink.link" :key="socialLink.icon" class="mx-3" dark icon>
+                    <v-btn v-for="socialLink in socialLinks" target="blank" :href="socialLink.link" :key="socialLink.icon"
+                        class="mx-3" dark icon>
                         <v-icon size="24px">{{ socialLink.icon }}</v-icon>
                     </v-btn>
                 </v-card-title>
