@@ -10,9 +10,6 @@
 <script>
 export default {
 	created() {
-		if(!this.authUser) {
-		 	this.$store.dispatch('authenticateUser');
-		}
 	},
 	computed: {
         authUser() {

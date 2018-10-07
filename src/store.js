@@ -53,11 +53,16 @@ export default new Vuex.Store({
                         password: credentials.password
                     })
                     .then(response => {
-                        const token = response.data.id_token;
+                        const token = response.data.id_token
                         localStorage.setItem('access_token', token)
-                        context.commit('retrieveToken', token)
-                        resolve()
-                    })
+						context.commit('retrieveToken', token)
+						axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+						return axios.get('/account')
+					})
+					.then(response => {
+						context.commit('authenticateUser', response.data)
+						resolve()
+					})
                     .catch(error => {
                         console.log(error);
                         reject(error)

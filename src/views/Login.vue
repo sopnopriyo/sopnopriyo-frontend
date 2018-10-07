@@ -1,7 +1,7 @@
 <template>
     <v-container fill-height>
         <v-layout justify-center align-center>
-            <v-flex xs5 class="lighten-5 purple rounded-card rounder-card">
+            <v-flex xs12 sm8 md5 class="lighten-5 purple rounded-card">
                 <v-container class="text-xs-center">
                     <v-card flat class="purple lighten-5">
                         <v-card-title primary-title>

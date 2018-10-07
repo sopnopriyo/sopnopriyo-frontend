@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-toolbar color="purple" dense fixed clipped-left app>
+        <!-- <v-toolbar color="purple" dense fixed clipped-left app>
             <v-toolbar-title>
                 <router-link to="/" class="white--text" tag="span" style="cursor: pointer">
                     Sopnopriyo
@@ -11,15 +11,42 @@
                 <v-btn v-for="item in items" :key="item.path" :to="item.path" flat ripple class="white--text">{{
                     item.text}}</v-btn>
             </v-toolbar-items>
-        </v-toolbar>
+        </v-toolbar> -->
+
+        <nav>
+            <v-toolbar color="purple" dense fixed clipped-left class="hidden-sm-and-down">
+                <v-toolbar-title>
+                     <router-link to="/" class="white--text" tag="span" style="cursor: pointer">
+                    	Sopnopriyo
+               		 </router-link>
+                </v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                    <v-btn v-for="item in items" :key="item.path" :to="item.path" flat ripple class="white--text">{{
+                        item.text}}</v-btn>
+                </v-toolbar-items>
+            </v-toolbar>
+            <div class="hidden-md-and-up">
+                <v-expansion-panel>
+                    <v-expansion-panel-content class="purple">
+                        <div slot="header">
+                            <router-link to="/" tag="span" style="cursor: pointer">Sopnopriyo</router-link>
+                        </div>
+                        <v-card  v-for="item in items" :key="item.path">
+                            <router-link :to="item.path" tag="span">
+                                <v-card-text class="purple white--text">{{item.text}}</v-card-text>
+                            </router-link>
+                        </v-card>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </div>
+        </nav>
         <v-content>
-            <v-container fluid>
-				<keep-alive>
-                	<router-view></router-view>
-				</keep-alive>
-            </v-container>
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
         </v-content>
-        <v-footer dark height="auto" app>
+        <v-footer dark height="auto">
             <v-card class="flex" flat tile>
                 <v-card-title class="purple lighten-1 white--text text-xs-center justify-center">
                     <v-btn v-for="socialLink in socialLinks" target="blank" :href="socialLink.link" :key="socialLink.icon"
@@ -54,34 +81,33 @@ export default {
             {
                 path: '/login',
                 text: 'login'
-			},
-		],
-		socialLinks: [
-			{
-				icon: 'fab fa-facebook',
-				link: 'https://facebook.com/sopnopriyoo/'
-			},
-			{
-				icon: 'fab fa-instagram',
-				link: 'https://www.instagram.com/sopno.priyo/'
-			},
-			{
-				icon: 'fab fa-twitter',
-				link: 'https://twitter.com/sopnopriyo'
-			},
-			{
-				icon: 'fab fa-linkedin',
-				link: 'https://www.linkedin.com/in/sopnopriyo/'
-			},
-			{
-				icon: 'fab fa-github',
-				link: 'https://github.com/sopnopriyo/sopnopriyo'
-			},
-			{
-				icon: 'fab fa-stack-overflow',
-				link: 'https://stackoverflow.com/users/4778904/shahin-alam'
-			}
-      	]
+            },
+        ],
+        socialLinks: [{
+                icon: 'fab fa-facebook',
+                link: 'https://facebook.com/sopnopriyoo/'
+            },
+            {
+                icon: 'fab fa-instagram',
+                link: 'https://www.instagram.com/sopno.priyo/'
+            },
+            {
+                icon: 'fab fa-twitter',
+                link: 'https://twitter.com/sopnopriyo'
+            },
+            {
+                icon: 'fab fa-linkedin',
+                link: 'https://www.linkedin.com/in/sopnopriyo/'
+            },
+            {
+                icon: 'fab fa-github',
+                link: 'https://github.com/sopnopriyo/sopnopriyo'
+            },
+            {
+                icon: 'fab fa-stack-overflow',
+                link: 'https://stackoverflow.com/users/4778904/shahin-alam'
+            }
+        ]
     }),
     computed: {
         loggedIn() {
