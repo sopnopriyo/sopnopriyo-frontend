@@ -26,8 +26,14 @@
                                 <v-flex xs12 sm6 md4>
                                     <v-text-field v-model="editedItem.lastName" label="Last Name"></v-text-field>
                                 </v-flex>
-                                <v-flex xs12 sm6 md4>
-                                    <v-text-field v-model="editedItem.authorities" label="authorities"></v-text-field>
+                                <v-flex xs12 sm6 md8>
+                                    <v-combobox 
+										v-model="editedItem.authorities" 
+										:items="roles" 
+										label="Roles" 
+										multiple
+										chips
+                                    ></v-combobox>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -47,7 +53,14 @@
                 <td class="text-xs-right">{{ props.item.email }}</td>
                 <td class="text-xs-right">{{ props.item.firstName }}</td>
                 <td class="text-xs-right">{{ props.item.lastName }}</td>
-                <td class="text-xs-right">{{ props.item.authorities }}</td>
+                <td class="text-xs-right">
+                    <v-flex no-wrap xs5 sm3>
+                        <v-chip v-for="role in props.item.authorities" :key="role" color="blue lighten-4" class="ml-0"
+                            label small>
+                            {{role}}
+                        </v-chip>
+                    </v-flex>
+                </td>
                 <td class="justify-center layout px-0">
                     <v-icon small class="mr-2" @click="editItem(props.item)">
                         edit
@@ -98,7 +111,10 @@ export default {
             firstName: '',
             lastName: '',
             authorities: ''
-        }
+		},
+		roles: [
+			"ROLE_USER", "ROLE_ADMIN"
+		]
     }),
 
     computed: {
