@@ -11,7 +11,8 @@ export default new Vuex.Store({
     state: {
         token: localStorage.getItem('access_token') || null,
         authUser: null,
-        userList: null,
+		userList: null,
+		postList: null
     },
     getters: {
         loggedIn(state) {
@@ -22,7 +23,10 @@ export default new Vuex.Store({
         },
         userList(state) {
             return state.userList
-        }
+		},
+		postList(state) {
+			return state.postList
+		}
     },
     mutations: {
         retrieveToken(state, token) {
@@ -36,7 +40,10 @@ export default new Vuex.Store({
         },
         fetchUsers(state, userList) {
             state.userList = userList
-        }
+		},
+		fetchPosts(state, postList) {
+			state.postList = postList
+		}
     },
     actions: {
         destroyToken(context) {
@@ -96,6 +103,20 @@ export default new Vuex.Store({
                         reject()
                     })
             });
-        }
+		},
+		fetchPosts(context) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+			return new Promise((resolve, reject) => {
+				return axios.get('/posts')
+				.then(response => {
+					context.commit('fetchPosts', response.data)
+					resolve()
+				})
+				.catch(error => {
+					console.log(error)
+					reject()
+				})
+			})
+		}
     }
 });
