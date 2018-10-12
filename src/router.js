@@ -107,19 +107,21 @@ router.beforeEach((to, from, next) => {
                 name: 'login'
             })
         } else {
-			 // to check if the user's previous token is valid or not
-			 if (isLoggedIn && !authUser) {
-				store.dispatch('authenticateUser')
-					.then(response => {
-						authUser = store.getters.authUser
-						next()
-					})
-					.catch(error => {
-						next({
-							name: 'logout'
-						})
-					})
-			}
+            // to check if the user's previous token is valid or not
+            if (isLoggedIn && !authUser) {
+                store.dispatch('authenticateUser')
+                    .then(response => {
+                        authUser = store.getters.authUser
+                        next()
+                    })
+                    .catch(error => {
+						console.log(error)
+                        store.dispatch('destroyToken')
+                        next({
+                            name: 'home'
+                        })
+                    })
+            }
             next()
         }
     } else {

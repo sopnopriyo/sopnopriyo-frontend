@@ -80,6 +80,9 @@
 
 </style>
 <script>
+import axios from 'axios';
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
+
 export default {
     data: () => ({
         dialog: false,
@@ -112,23 +115,23 @@ export default {
                 align: 'center',
                 sortable: false
             },
-		],
-		statusOptions: [
-			"DRAFT", "PUBLISHED"
-		],
+        ],
+        statusOptions: [
+            "DRAFT", "PUBLISHED"
+        ],
         posts: [],
         editedIndex: -1,
         editedItem: {
             title: '',
             body: "",
             status: "",
-            image: "",
+            coverImage: null,
         },
         defaultItem: {
             title: '',
             body: "",
             status: "",
-            image: "",
+            coverImage: null,
         }
     }),
 
@@ -138,6 +141,9 @@ export default {
         },
         computedPosts() {
             return this.$store.getters.postList || [];
+        },
+        token() {
+            return this.$store.state.token;
         }
     },
 
@@ -149,6 +155,7 @@ export default {
 
     created() {
         this.initialize();
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
     },
 
     methods: {
@@ -176,30 +183,44 @@ export default {
         },
 
         save() {
-			console.log(this.editedItem)
             if (this.editedIndex > -1) {
                 Object.assign(this.posts[this.editedIndex], this.editedItem);
             } else {
                 this.posts.push(this.editedItem);
             }
-            this.close();
-		},
-		 onFileChange(e) {
-			var files = e.target.files || e.dataTransfer.files;
-			if (!files.length)
-				return;
-			this.createImage(files[0]);
-		},
-		createImage(file) {
-			var image = new Image();
-			var reader = new FileReader();
-			var vm = this;
 
-			reader.onload = (e) => {
-				vm.image = e.target.result;
-			};
-			reader.readAsDataURL(file);
-		},
+            return axios.put('/posts', {
+					id: this.editedItem.id,
+                    title: this.editedItem.title,
+                    body: this.editedItem.body,
+					status: this.editedItem.status,
+					date: this.editedItem.date,
+					coverImage: this.editedItem.coverImage || [],
+					coverImageContentType: this.editedItem.coverImageContentType || "image/png"
+                })
+                .then(response => {
+					this.initialize();
+					this.close();
+                })
+                .catch(error => {
+                    this.close();
+                })
+        },
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+        },
+        createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = (e) => {
+                vm.image = e.target.result;
+            };
+        },
     }
 };
 </script>

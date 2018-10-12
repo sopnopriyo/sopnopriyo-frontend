@@ -4,9 +4,8 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-//axios.defaults.baseURL = 'https://sopnopriyo.herokuapp.com/api'
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
 
-axios.defaults.baseURL = 'http://localhost:8080/api';
 export default new Vuex.Store({
     state: {
         token: localStorage.getItem('access_token') || null,
