@@ -10,12 +10,31 @@ import AdminPanel from "./layout/AdminPanel"
 export default {
     data: () => ({
         drawer: true,
-        items: [
-            { icon: 'fas fa-tachometer-alt', path: 'dashboard', text: 'Dashboard' },
-            { icon: 'fas fa-user', path: 'manageuser', text: 'Users' },
-            { icon: 'fab fa-blogger', path: 'manageblog', text: 'Blog' },
-            { icon: 'fas fa-archive', path: 'manageportfolio', text: 'Portfolio' },
-            { icon: 'fas fa-envelope', path: 'managecontact', text: 'Message' }
+        items: [{
+                icon: 'fas fa-tachometer-alt',
+                path: 'dashboard',
+                text: 'Dashboard'
+            },
+            {
+                icon: 'fas fa-user',
+                path: 'manageuser',
+                text: 'Users'
+            },
+            {
+                icon: 'fab fa-blogger',
+                path: 'manageblog',
+                text: 'Blog'
+            },
+            {
+                icon: 'fas fa-archive',
+                path: 'manageportfolio',
+                text: 'Portfolio'
+            },
+            {
+                icon: 'fas fa-envelope',
+                path: 'managecontact',
+                text: 'Message'
+            }
         ]
     }),
     props: {
@@ -25,10 +44,13 @@ export default {
         loggedIn() {
             return this.$store.getters.loggedIn;
         }
-	},
-	components: {
-		Frontend,
-		AdminPanel
-	}
+    },
+    created: () => {
+        document.title = "Sopnopriyo"
+    },
+    components: {
+        Frontend,
+        AdminPanel
+    }
 };
 </script>

@@ -164,14 +164,22 @@ export default {
         },
 
         editItem(item) {
-            this.editedIndex = this.posts.indexOf(item);
+
+            this.editedIndex = this.computedPosts.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
 
         deleteItem(item) {
-            const index = this.posts.indexOf(item);
-            confirm('Are you sure you want to delete this item?') && this.computedPosts.splice(index, 1);
+            if(confirm('Are you sure you want to delete this item?')) {
+				return axios.delete('/posts/'+item.id)
+				.then(response => {
+					this.initialize()
+				})
+				.catch(errors => {
+
+				})
+			}
         },
 
         close() {
@@ -183,24 +191,31 @@ export default {
         },
 
         save() {
+            let savePromise;
             if (this.editedIndex > -1) {
-                Object.assign(this.posts[this.editedIndex], this.editedItem);
-            } else {
-                this.posts.push(this.editedItem);
-            }
-
-            return axios.put('/posts', {
-					id: this.editedItem.id,
+                savePromise = axios.put('/posts', {
+                    id: this.editedItem.id,
                     title: this.editedItem.title,
                     body: this.editedItem.body,
-					status: this.editedItem.status,
-					date: this.editedItem.date,
-					coverImage: this.editedItem.coverImage || [],
-					coverImageContentType: this.editedItem.coverImageContentType || "image/png"
+                    status: this.editedItem.status,
+                    date: (new Date()).toISOString() ,
+                    coverImage: this.editedItem.coverImage || [],
+                    coverImageContentType: this.editedItem.coverImageContentType || "image/png"
                 })
-                .then(response => {
-					this.initialize();
-					this.close();
+			}
+			else {
+				savePromise = axios.post('/posts', {
+                    title: this.editedItem.title,
+                    body: this.editedItem.body,
+                    status: this.editedItem.status,
+                    date: (new Date()).toISOString(),
+                    coverImage: this.editedItem.coverImage || [],
+                    coverImageContentType: this.editedItem.coverImageContentType || "image/png"
+                })
+            }
+            return savePromise.then(response => {
+                    this.initialize();
+                    this.close();
                 })
                 .catch(error => {
                     this.close();
