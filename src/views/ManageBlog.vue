@@ -171,7 +171,7 @@ export default {
         },
 
         deleteItem(item) {
-            if(confirm('Are you sure you want to delete this item?')) {
+            if(confirm('Are you sure you want to delete this post?')) {
 				return axios.delete('/posts/'+item.id)
 				.then(response => {
 					this.initialize()
@@ -193,15 +193,7 @@ export default {
         save() {
             let savePromise;
             if (this.editedIndex > -1) {
-                savePromise = axios.put('/posts', {
-                    id: this.editedItem.id,
-                    title: this.editedItem.title,
-                    body: this.editedItem.body,
-                    status: this.editedItem.status,
-                    date: (new Date()).toISOString() ,
-                    coverImage: this.editedItem.coverImage || [],
-                    coverImageContentType: this.editedItem.coverImageContentType || "image/png"
-                })
+                savePromise = axios.put('/posts', this.editedItem)
 			}
 			else {
 				savePromise = axios.post('/posts', {
@@ -209,7 +201,8 @@ export default {
                     body: this.editedItem.body,
                     status: this.editedItem.status,
                     date: (new Date()).toISOString(),
-                    coverImage: this.editedItem.coverImage || [],
+					coverImage: this.editedItem.coverImage || [],
+					authorities: this.editedItem.authorities,
                     coverImageContentType: this.editedItem.coverImageContentType || "image/png"
                 })
             }

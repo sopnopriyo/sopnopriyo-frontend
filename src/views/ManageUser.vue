@@ -80,41 +80,62 @@
 
 </style>
 <script>
+import axios from 'axios';
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
 export default {
     data: () => ({
         dialog: false,
-        headers: [
-            {
+        headers: [{
                 text: 'Username',
                 align: 'left',
                 sortable: false,
                 value: 'login'
             },
-            { text: 'Email', value: 'email' },
-            { text: 'First Name', value: 'firstName' },
-            { text: 'Last Name', value: 'lastName' },
-            { text: 'Authorities', value: 'authorities', sortable: false },
-            { text: 'Actions', value: 'action', sortable: false }
+            {
+                text: 'Email',
+                value: 'email'
+            },
+            {
+                text: 'First Name',
+                value: 'firstName'
+            },
+            {
+                text: 'Last Name',
+                value: 'lastName'
+            },
+            {
+                text: 'Authorities',
+                value: 'authorities',
+                sortable: false
+            },
+            {
+                text: 'Actions',
+                value: 'action',
+                sortable: false
+            }
         ],
         desserts: [],
         editedIndex: -1,
         editedItem: {
+            id: '',
             login: '',
             email: '',
             firstName: '',
             lastName: '',
-            authorities: ''
+			authorities: [],
+			date: (new Date()).toISOString(),
         },
         defaultItem: {
             login: '',
             email: '',
             firstName: '',
             lastName: '',
-            authorities: ''
-		},
-		roles: [
-			"ROLE_USER", "ROLE_ADMIN"
-		]
+			authorities: [],
+			date: (new Date()).toISOString(),
+        },
+        roles: [
+            "ROLE_USER", "ROLE_ADMIN"
+        ]
     }),
 
     computed: {
@@ -138,8 +159,8 @@ export default {
 
     methods: {
         initialize() {
-			this.$store.dispatch('fetchUsers');
-		},
+            this.$store.dispatch('fetchUsers');
+        },
 
         editItem(item) {
             this.editedIndex = this.userList.indexOf(item);
@@ -148,9 +169,15 @@ export default {
         },
 
         deleteItem(item) {
-            const index = this.userList.indexOf(item);
-			confirm('Are you sure you want to delete this item?') && this.userList.splice(index, 1);
-			//Save into database
+            if (confirm('Are you sure you want to delete this user?')) {
+                return axios.delete('/users/' + item.login)
+                    .then(response => {
+                        this.initialize()
+                    })
+                    .catch(errors => {
+
+                    })
+            }
         },
 
         close() {
@@ -162,14 +189,26 @@ export default {
         },
 
         save() {
+            let savePromise;
             if (this.editedIndex > -1) {
-				Object.assign(this.userList[this.editedIndex], this.editedItem);
-				
-				// Save into database
+                savePromise = axios.put('/users', this.editedItem)
             } else {
-                this.userList.push(this.editedItem);
+                savePromise = axios.post('/users', {
+                    firstName: this.editedItem.firstName,
+                    lastName: this.editedItem.lastName,
+                    login: this.editedItem.login,
+                    authorities: this.editItem.authorities,
+                    email: this.editedItem.email
+                })
             }
-            this.close();
+			return savePromise
+			.then(response => {
+                    this.initialize();
+                    this.close();
+                })
+                .catch(error => {
+                    this.close();
+                })
         }
     }
 };
