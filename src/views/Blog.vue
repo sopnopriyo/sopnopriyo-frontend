@@ -9,7 +9,7 @@
                             <span style="color:grey"> Created on </span>
                             <strong>{{post.date}}</strong>
                         </div>
-                        <v-img src="https://arpitprod.github.io/Vuetify-Blog-Template/public/Blog_pic2.jpg" height="400px" class="mt-3"></v-img>
+                        <v-img :src="'data:'+post.coverImageContentType+';base64,'+post.coverImage" height="400px" class="mt-3"></v-img>
                         <v-card-text style="font-size:16px;">{{(post.body || '').substring(0, 100) + '…'}}</v-card-text>
                         <v-card-actions class="mb-3">
                             <v-btn :href="post.link" flat style="color:#5277AC;">READ MORE</v-btn>
