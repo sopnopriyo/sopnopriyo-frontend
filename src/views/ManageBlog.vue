@@ -24,23 +24,22 @@
                                     <v-select :items="statusOptions" v-model="editedItem.status" label="Status"></v-select>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <div class="flex xs12 sm12 md12">
-                                        <div class="v-input v-text-field theme--dark">
-                                            <div class="v-input__control">
-                                                <div class="v-input__slot">
-                                                    <div class="v-text-field__slot">
-                                                        <label aria-hidden="true" class="v-label theme--dark" style="left: 0px; right: auto; position: absolute;"></label>
-                                                        <input aria-label="image" type="file" @change="onFileChange">
-                                                    </div>
-                                                </div>
-                                                <div class="v-text-field__details">
-                                                    <div class="v-messages theme--dark">
-                                                        <div class="v-messages__wrapper">
-                                                        </div>
-                                                    </div>
+                                    <div class="v-input v-text-field theme--dark">
+                                        <div class="v-input__control">
+                                            <div class="v-input__slot">
+                                                <div class="v-text-field__slot">
+                                                    <label aria-hidden="true" class="v-label theme--dark" style="left: 0px; right: auto; position: absolute;"></label>
+                                                    <input aria-label="image" type="file" @change="onFileChange">
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <!-- "data:image/jpg;base64," + baseStr64 -->
+                                        <img :src="'data:'+editedItem.coverImageContentType+';base64,'+editedItem.coverImage"
+                                            class="blog-image-upload">
+                                        <input type="hidden" v-model="editedItem.coverImage">
+                                        <input type="hidden" v-model="editedItem.coverImageContentType">
                                     </div>
                                 </v-flex>
                             </v-layout>
@@ -76,8 +75,11 @@
         </v-data-table>
     </div>
 </template>
-<style lang="sass">
-
+<style lang="scss">
+.blog-image-upload {
+    max-width: 100% ;
+	overflow: hidden;
+}
 </style>
 <script>
 import axios from 'axios';
@@ -125,13 +127,17 @@ export default {
             title: '',
             body: "",
             status: "",
-            coverImage: null,
+            coverImage: [],
+            coverImageB64: '',
+            coverImageContentType: null,
         },
         defaultItem: {
             title: '',
             body: "",
             status: "",
-            coverImage: null,
+            coverImage: [],
+            coverImageB64: '',
+            coverImageContentType: null,
         }
     }),
 
@@ -171,15 +177,15 @@ export default {
         },
 
         deleteItem(item) {
-            if(confirm('Are you sure you want to delete this post?')) {
-				return axios.delete('/posts/'+item.id)
-				.then(response => {
-					this.initialize()
-				})
-				.catch(errors => {
+            if (confirm('Are you sure you want to delete this post?')) {
+                return axios.delete('/posts/' + item.id)
+                    .then(response => {
+                        this.initialize()
+                    })
+                    .catch(errors => {
 
-				})
-			}
+                    })
+            }
         },
 
         close() {
@@ -194,19 +200,19 @@ export default {
             let savePromise;
             if (this.editedIndex > -1) {
                 savePromise = axios.put('/posts', this.editedItem)
-			}
-			else {
-				savePromise = axios.post('/posts', {
+            } else {
+                savePromise = axios.post('/posts', {
                     title: this.editedItem.title,
                     body: this.editedItem.body,
                     status: this.editedItem.status,
                     date: (new Date()).toISOString(),
-					coverImage: this.editedItem.coverImage || [],
-					authorities: this.editedItem.authorities,
+                    coverImage: this.editedItem.coverImage || [],
+                    authorities: this.editedItem.authorities,
                     coverImageContentType: this.editedItem.coverImageContentType || "image/png"
                 })
             }
-            return savePromise.then(response => {
+			return savePromise
+			.then(response => {
                     this.initialize();
                     this.close();
                 })
@@ -221,13 +227,20 @@ export default {
             this.createImage(files[0]);
         },
         createImage(file) {
-            var image = new Image();
+            this.editedItem.coverImageContentType = file.type
             var reader = new FileReader();
-            var vm = this;
 
+            var byteArrayImg = []
             reader.onload = (e) => {
-                vm.image = e.target.result;
+                this.editedItem.coverImage = e.target.result;
+                var byteArray = e.target.result;
+                var bytes = new Uint8Array(byteArray);
+                for (var i = 0; i < bytes.length; i++) {
+                    byteArrayImg.push(bytes[i]);
+                }
+                this.editedItem.coverImage = byteArrayImg
             };
+            reader.readAsArrayBuffer(file)
         },
     }
 };
