@@ -10,7 +10,6 @@
                     <v-card-title>
                         <span class="headline">{{ formTitle }}</span>
                     </v-card-title>
-
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
@@ -63,7 +62,7 @@
                 </v-card>
             </v-dialog>
         </v-toolbar>
-        <v-data-table :headers="headers" :items="computedPosts" hide-actions class="elevation-1">
+        <v-data-table :headers="headers" :items="computedPosts" :loading="loading" hide-actions class="elevation-1">
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.title }}</td>
                 <td>{{(props.item.body || '').substring(0, 50) + '…'}}</td>
@@ -118,7 +117,7 @@ export default {
             {
                 text: 'Date',
                 align: 'left',
-                sortable: false,
+                sortable: true,
                 value: 'date'
             },
             {
@@ -133,7 +132,8 @@ export default {
         posts: [],
         editedIndex: -1,
         date: null,
-        menu1: false,
+		menu1: false,
+		loading: false,
         editedItem: {
             title: '',
             body: "",
@@ -179,13 +179,20 @@ export default {
     },
 
     created() {
+		this.loading = true;
         this.initialize();
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
+		axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
     },
 
     methods: {
         initialize() {
-            this.$store.dispatch('fetchPosts');
+			this.$store.dispatch('fetchPosts')
+			.then(response => {
+				this.loading = false;
+			})
+			.catch(err => {
+				this.loading = false;
+			})
         },
 
         editItem(item) {

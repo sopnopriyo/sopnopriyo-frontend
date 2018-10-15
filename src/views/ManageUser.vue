@@ -116,22 +116,23 @@ export default {
         ],
         desserts: [],
         editedIndex: -1,
+        loading: false,
         editedItem: {
             id: '',
             login: '',
             email: '',
             firstName: '',
             lastName: '',
-			authorities: [],
-			date: (new Date()).toISOString(),
+            authorities: [],
+            date: (new Date()).toISOString(),
         },
         defaultItem: {
             login: '',
             email: '',
             firstName: '',
             lastName: '',
-			authorities: [],
-			date: (new Date()).toISOString(),
+            authorities: [],
+            date: (new Date()).toISOString(),
         },
         roles: [
             "ROLE_USER", "ROLE_ADMIN"
@@ -154,12 +155,19 @@ export default {
     },
 
     created() {
+        this.loading = true;
         this.initialize();
     },
 
     methods: {
         initialize() {
-            this.$store.dispatch('fetchUsers');
+            this.$store.dispatch('fetchUsers')
+                .then(response => {
+                    this.loading = false;
+                })
+                .catch(err => {
+                    this.loading = false;
+                })
         },
 
         editItem(item) {
@@ -201,8 +209,8 @@ export default {
                     email: this.editedItem.email
                 })
             }
-			return savePromise
-			.then(response => {
+            return savePromise
+                .then(response => {
                     this.initialize();
                     this.close();
                 })
