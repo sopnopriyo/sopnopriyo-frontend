@@ -155,12 +155,12 @@ export default {
     },
 
     created() {
-        this.loading = true;
         this.initialize();
     },
 
     methods: {
         initialize() {
+            this.loading = true;
             this.$store.dispatch('fetchUsers')
                 .then(response => {
                     this.loading = false;

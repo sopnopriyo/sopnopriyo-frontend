@@ -179,13 +179,14 @@ export default {
     },
 
     created() {
-		this.loading = true;
         this.initialize();
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
     },
 
     methods: {
         initialize() {
+			this.loading = true;
+
 			this.$store.dispatch('fetchPosts')
 			.then(response => {
 				this.loading = false;
