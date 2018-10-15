@@ -23,6 +23,15 @@
                                 <v-flex xs12 sm12 md12>
                                     <v-select :items="statusOptions" v-model="editedItem.status" label="Status"></v-select>
                                 </v-flex>
+                                <v-flex xs12 lg6>
+                                    <v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"
+                                        lazy transition="scale-transition" offset-y full-width max-width="290px"
+                                        min-width="290px">
+                                        <v-text-field slot="activator" v-model="editedItem.date" label="Date" hint="YYYY/MM/DD format"
+                                            persistent-hint @blur="date = parseDate(editedItem.date)"></v-text-field>
+                                        <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                                    </v-menu>
+                                </v-flex>
                                 <v-flex xs12 sm12 md12>
                                     <div class="v-input v-text-field theme--dark">
                                         <div class="v-input__control">
@@ -123,18 +132,22 @@ export default {
         ],
         posts: [],
         editedIndex: -1,
+        date: null,
+        menu1: false,
         editedItem: {
             title: '',
             body: "",
-            status: "",
+			status: "",
+			date: (new Date()).toISOString(),
             coverImage: [],
             coverImageB64: '',
-            coverImageContentType: null,
+			coverImageContentType: null,
         },
         defaultItem: {
             title: '',
             body: "",
-            status: "",
+			status: "",
+			date: (new Date()).toISOString(),
             coverImage: [],
             coverImageB64: '',
             coverImageContentType: null,
@@ -150,12 +163,18 @@ export default {
         },
         token() {
             return this.$store.state.token;
+        },
+        computedDateFormatted() {
+            return this.formatDate(this.date)
         }
     },
 
     watch: {
         dialog(val) {
             val || this.close();
+        },
+        date(val) {
+            this.editedItem.date = this.formatDate(this.date)
         }
     },
 
@@ -205,14 +224,14 @@ export default {
                     title: this.editedItem.title,
                     body: this.editedItem.body,
                     status: this.editedItem.status,
-                    date: (new Date()).toISOString(),
+                    date: this.editedItem.date,
                     coverImage: this.editedItem.coverImage || [],
                     authorities: this.editedItem.authorities,
                     coverImageContentType: this.editedItem.coverImageContentType || "image/png"
                 })
             }
-			return savePromise
-			.then(response => {
+            return savePromise
+                .then(response => {
                     this.initialize();
                     this.close();
                 })
@@ -242,6 +261,18 @@ export default {
             };
             reader.readAsArrayBuffer(file)
         },
+        formatDate(date) {
+            if (!date) return null
+			date = date.substr(0,10);
+            const [year, month, day] = date.split('-')
+            return `${year}-${month}-${day}`+`T12:01:14.915Z`
+        },
+        parseDate(date) {
+			if (!date) return null
+			date = date.substr(0, 10);
+            const [year, month, day] = date.split('-')
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`+`T12:01:14.915Z`
+        }
     }
 };
 </script>
