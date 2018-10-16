@@ -80,7 +80,7 @@ export default {
             },
             {
                 path: '/login',
-                text: 'login'
+                text: 'Login'
             },
         ],
         socialLinks: [{
