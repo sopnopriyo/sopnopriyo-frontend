@@ -1,23 +1,36 @@
 <template>
     <v-container class="mt-5">
-        <v-flex xs12>
-            <v-layout row class="mt-3">
-                <v-flex xs12>
-                    <v-card flat v-for="post in computedPosts" :key="post.id" class="grey--text text--darken-2">
-                        <span style="font-size:32px;" class="mt-3">{{ post.title }}</span>
-                        <div class="mt-3">
-                            <span style="color:grey"> Created on </span>
-                            <strong>{{post.date}}</strong>
-                        </div>
-                        <v-img :src="'data:'+post.coverImageContentType+';base64,'+post.coverImage" height="400px" class="mt-3"></v-img>
-                        <v-card-text style="font-size:16px;">{{(post.body || '').substring(0, 100) + '…'}}</v-card-text>
-                        <v-card-actions class="mb-3">
-                            <v-btn :href="post.link" flat style="color:#5277AC;">READ MORE</v-btn>
+        <v-layout row wrap align-center>
+            <v-flex xs12 md12>
+                <div v-for="post in computedPosts" :key="post.title">
+                    <v-card hover>
+                        <v-card-media class="white--text" height="350px" :src="'data:'+post.coverImageContentType+';base64,'+post.coverImage">
+                            <v-container fill-height fluid>
+                                <v-layout>
+                                    <v-flex xs12 align-end d-flex>
+                                        <span class="headline black--text">{{ post.title }}</span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-media>
+                        <v-card-text>
+                            <div>
+                                <span style="color:grey"> Created on </span>
+                                <strong>{{(post.date ||'').substring(0,10)}}</strong>
+                            </div>
+                            {{ post.body }}
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn icon class="blue--text">
+                                <v-icon medium> fab fa-facebook</v-icon>
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn flat class="blue--text">Read More</v-btn>
                         </v-card-actions>
                     </v-card>
-                </v-flex>
-            </v-layout>
-        </v-flex>
+                </div>
+            </v-flex>
+        </v-layout>
     </v-container>
 </template>
 <script>
