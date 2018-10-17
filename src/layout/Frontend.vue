@@ -69,7 +69,7 @@ export default {
         items: [
 			{
                 path: '/',
-                text: 'Blog'
+                text: 'Home'
 			},
 			{
                 path: '/blog',
