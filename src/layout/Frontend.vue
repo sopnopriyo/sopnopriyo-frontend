@@ -51,7 +51,7 @@
                 <v-card-title class="purple lighten-1 white--text text-xs-center justify-center">
                     <v-btn v-for="socialLink in socialLinks" target="blank" :href="socialLink.link" :key="socialLink.icon"
                         class="mx-3" dark icon>
-                        <v-icon size="24px">{{ socialLink.icon }}</v-icon>
+                        <v-icon medium>{{ socialLink.icon }}</v-icon>
                     </v-btn>
                 </v-card-title>
                 <v-card-actions class="purple darken-3 justify-center">
@@ -66,13 +66,18 @@
 <script>
 export default {
     data: () => ({
-        items: [{
+        items: [
+			{
+                path: '/',
+                text: 'Blog'
+			},
+			{
                 path: '/blog',
                 text: 'Blog'
             },
             {
-                path: '/about',
-                text: 'About'
+                path: '/portfolio',
+                text: 'portfolio'
             },
             {
                 path: '/contact',

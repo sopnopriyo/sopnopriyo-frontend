@@ -45,9 +45,6 @@ export default {
             return this.$store.getters.loggedIn;
         }
     },
-    created: () => {
-        document.title = "Sopnopriyo"
-    },
     components: {
         Frontend,
         AdminPanel

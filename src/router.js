@@ -7,31 +7,47 @@ Vue.use(Router)
 const routes = [{
         path: '/',
         name: 'home',
-        component: Home
+        component: Home,
+        meta: {
+            title: "Sopnopriyo - Full Stack Developer"
+        }
     },
     {
         path: '/blog',
         name: 'blog',
         component: () =>
-            import( /* webpackChunkName: "blog" */ './views/Blog.vue')
+            import( /* webpackChunkName: "blog" */ './views/Blog.vue'),
+        meta: {
+            title: "Sopnopriyo - Blog"
+        }
+
     },
     {
         path: '/contact',
         name: 'contact',
         component: () =>
-            import( /* webpackChunkName: "contact" */ './views/Contact.vue')
+            import( /* webpackChunkName: "contact" */ './views/Contact.vue'),
+        meta: {
+            title: "Sopnopriyo - Contact"
+        }
     },
     {
-        path: '/about',
-        name: 'about',
+        path: '/portfolio',
+        name: 'portfolio',
         component: () =>
-            import( /* webpackChunkName: "about" */ './views/About.vue')
+            import( /* webpackChunkName: "about" */ './views/Portfolio.vue'),
+        meta: {
+            title: "Sopnopriyo - Portfolio"
+        }
     },
     {
         path: '/login',
         name: 'login',
         component: () =>
-            import( /* webpackChunkName: "login" */ './views/Login.vue')
+            import( /* webpackChunkName: "login" */ './views/Login.vue'),
+        meta: {
+            title: "Sopnopriyo - Login"
+        }
     },
     {
         path: '/manageuser',
@@ -115,7 +131,7 @@ router.beforeEach((to, from, next) => {
                         next()
                     })
                     .catch(error => {
-						console.log(error)
+                        console.log(error)
                         store.dispatch('destroyToken')
                         next({
                             name: 'home'
@@ -125,6 +141,7 @@ router.beforeEach((to, from, next) => {
             next()
         }
     } else {
+		document.title = to.meta.title
         next()
     }
 });

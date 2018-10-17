@@ -14,16 +14,16 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-                                <v-flex xs12 sm6 md4>
+                                <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="editedItem.login" label="Username"></v-text-field>
                                 </v-flex>
-                                <v-flex xs12 sm6 md4>
+                                <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                                 </v-flex>
-                                <v-flex xs12 sm6 md4>
+                                <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="editedItem.firstName" label="First Name"></v-text-field>
                                 </v-flex>
-                                <v-flex xs12 sm6 md4>
+                                <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="editedItem.lastName" label="Last Name"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm6 md8>
@@ -124,14 +124,14 @@ export default {
             firstName: '',
             lastName: '',
             authorities: [],
-            date: (new Date()).toISOString(),
+            date: ''
         },
         defaultItem: {
             login: '',
             email: '',
             firstName: '',
             lastName: '',
-            authorities: [],
+            authorities: ['ROLE_USER'],
             date: (new Date()).toISOString(),
         },
         roles: [
@@ -199,6 +199,7 @@ export default {
         save() {
             let savePromise;
             if (this.editedIndex > -1) {
+				console.log(this.editedItem)
                 savePromise = axios.put('/users', this.editedItem)
             } else {
                 savePromise = axios.post('/users', {
