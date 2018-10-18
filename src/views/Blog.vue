@@ -18,7 +18,9 @@
                                 <span style="color:grey"> Created on </span>
                                 <strong>{{(post.date ||'').substring(0,10)}}</strong>
                             </div>
-                            {{ post.body }}
+							<pre>
+{{ post.body }}
+							</pre>
                         </v-card-text>
                         <v-card-actions>
                             <v-btn icon class="blue--text">
@@ -33,6 +35,19 @@
         </v-layout>
     </v-container>
 </template>
+<style lang="scss">
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	text-align: justify;
+    text-justify: inter-word;
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+</style>
+
 <script>
 import axios from 'axios';
 axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
