@@ -2,7 +2,7 @@
     <v-container class="mt-5">
         <v-layout row wrap align-center>
             <v-flex xs12 md12>
-                <div v-for="post in computedPosts" :key="post.title">
+                <div v-for="post in computedPosts" :key="post.title" class="mb-2">
                     <v-card hover>
                         <v-card-media class="white--text" height="350px" :src="'data:'+post.coverImageContentType+';base64,'+post.coverImage">
                             <v-container fill-height fluid>

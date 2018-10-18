@@ -9,9 +9,9 @@
                         </v-card-title>
                         <v-form>
                             <v-text-field prepend-icon="fas fa-user" v-model="fields.username.value" name="Username"
-                                label="Username"></v-text-field>
+                                label="Username" :rules="fields.username.rules" required></v-text-field>
                             <v-text-field prepend-icon="fas fa-key" v-model="fields.password.value" name="Password"
-                                label="Password" type="password"></v-text-field>
+                                label="Password" :rules="fields.password.rules" type="password" required></v-text-field>
                             <v-card-actions>
                                 <v-btn primary large block @click="performlogin()">Login</v-btn>
                             </v-card-actions>
@@ -34,11 +34,11 @@ export default {
             fields: {
                 username: {
                     value: '',
-                    feedback: ''
+                    rules:  [v => !!v || 'Username is required'],
                 },
                 password: {
                     value: '',
-                    feedback: ''
+                    rules: [ v => !!v || 'Password is required'],
                 }
             }
         };
