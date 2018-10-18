@@ -44,7 +44,13 @@ pre {
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 	text-align: justify;
     text-justify: inter-word;
-	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+	font-family: medium-content-serif-font,Georgia,Cambria,"Times New Roman",Times,serif;
+    letter-spacing: .01rem;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 21px;
+    line-height: 1.58;
+    letter-spacing: -.003em;
 }
 </style>
 
