@@ -7,6 +7,7 @@
             <v-dialog v-model="dialog" max-width="700px">
                 <v-btn slot="activator" color="primary" dark class="mb-2">New Post</v-btn>
                 <v-card>
+					<v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-title>
                         <span class="headline">{{ formTitle }}</span>
                     </v-card-title>
@@ -14,41 +15,30 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                                    <v-text-field v-model="editedItem.title" :rules="formRules.title.rules" label="Title"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-textarea solo name="input-7-4" label="Body" v-model="editedItem.body"></v-textarea>
+                                    <v-textarea solo name="input-7-4" :rules="formRules.body.rules" label="Body"
+                                        v-model="editedItem.body"></v-textarea>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-select :items="statusOptions" v-model="editedItem.status" label="Status"></v-select>
+                                    <v-select :items="statusOptions" v-model="editedItem.status" :rules="formRules.body.rules"
+                                        label="Status">
+                                    </v-select>
                                 </v-flex>
                                 <v-flex xs12 lg6>
                                     <v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"
                                         lazy transition="scale-transition" offset-y full-width max-width="290px"
                                         min-width="290px">
-                                        <v-text-field slot="activator" v-model="editedItem.date" label="Date" hint="YYYY/MM/DD format"
-                                            persistent-hint @blur="date = parseDate(editedItem.date)"></v-text-field>
+                                        <v-text-field slot="activator" v-model="editedItem.date" :rules="formRules.date.rules"
+                                            label="Date" hint="YYYY/MM/DD format" persistent-hint @blur="date = parseDate(editedItem.date)">
+                                        </v-text-field>
                                         <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                                     </v-menu>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <div class="v-input v-text-field theme--dark">
-                                        <div class="v-input__control">
-                                            <div class="v-input__slot">
-                                                <div class="v-text-field__slot">
-                                                    <label aria-hidden="true" class="v-label theme--dark" style="left: 0px; right: auto; position: absolute;"></label>
-                                                    <input aria-label="image" type="file" @change="onFileChange">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <!-- "data:image/jpg;base64," + baseStr64 -->
-                                        <img :src="'data:'+editedItem.coverImageContentType+';base64,'+editedItem.coverImage"
-                                            class="blog-image-upload">
-                                        <input type="hidden" v-model="editedItem.coverImage">
-                                        <input type="hidden" v-model="editedItem.coverImageContentType">
-                                    </div>
+                                    <v-text-field v-model="editedItem.coverPhotoUrl" :rules="formRules.coverPhotoUrl.rules"
+                                        label="Cover Photo URL"></v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -56,9 +46,10 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-                        <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+                        <v-btn color="blue darken-1"  flat @click.native="close">Cancel</v-btn>
+                        <v-btn color="blue darken-1"  :disabled="!valid" flat @click="save">Save</v-btn>
                     </v-card-actions>
+					</v-form>
                 </v-card>
             </v-dialog>
         </v-toolbar>
@@ -95,7 +86,8 @@ axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
 
 export default {
     data: () => ({
-        dialog: false,
+		dialog: false,
+		valid: false,
         headers: [{
                 text: 'Title',
                 align: 'left',
@@ -139,19 +131,32 @@ export default {
             body: "",
 			status: "",
 			date: (new Date()).toISOString(),
-            coverImage: [],
-            coverImageB64: '',
-			coverImageContentType: null,
+            coverPhotoUrl: ''
         },
         defaultItem: {
             title: '',
             body: "",
 			status: "",
 			date: (new Date()).toISOString(),
-            coverImage: [],
-            coverImageB64: '',
-            coverImageContentType: null,
-        }
+            coverPhotoUrl: ''
+        },
+		formRules: {
+			title: {
+				rules:  [v => !!v || 'Title is required'],
+			},
+			body: {
+				rules:  [v => !!v || 'Body is required'],
+			},
+			status: {
+				rules:  [v => !!v || 'Status is required'],
+			},
+			date: {
+				rules:  [v => !!v || 'Date is required'],
+			},
+			coverPhotoUrl: {
+				rules:  [v => !!v || 'Cover Photo Url is required'],
+			}
+		}
     }),
 
     computed: {
@@ -224,6 +229,8 @@ export default {
         },
 
         save() {
+
+			 if (this.$refs.form.validate()) {
             let savePromise;
             if (this.editedIndex > -1) {
                 savePromise = axios.put('/posts', this.editedItem)
@@ -233,9 +240,7 @@ export default {
                     body: this.editedItem.body,
                     status: this.editedItem.status,
                     date: this.editedItem.date,
-                    coverImage: this.editedItem.coverImage || [],
-                    authorities: this.editedItem.authorities,
-                    coverImageContentType: this.editedItem.coverImageContentType || "image/png"
+                    coverPhotoUrl: this.editedItem.coverPhotoUrl,
                 })
             }
             return savePromise
@@ -245,29 +250,8 @@ export default {
                 })
                 .catch(error => {
                     this.close();
-                })
-        },
-        onFileChange(e) {
-            var files = e.target.files || e.dataTransfer.files;
-            if (!files.length)
-                return;
-            this.createImage(files[0]);
-        },
-        createImage(file) {
-            this.editedItem.coverImageContentType = file.type
-            var reader = new FileReader();
-
-            var byteArrayImg = []
-            reader.onload = (e) => {
-                this.editedItem.coverImage = e.target.result;
-                var byteArray = e.target.result;
-                var bytes = new Uint8Array(byteArray);
-                for (var i = 0; i < bytes.length; i++) {
-                    byteArrayImg.push(bytes[i]);
-                }
-                this.editedItem.coverImage = byteArrayImg
-            };
-            reader.readAsArrayBuffer(file)
+				})
+			 }
         },
         formatDate(date) {
             if (!date) return null
