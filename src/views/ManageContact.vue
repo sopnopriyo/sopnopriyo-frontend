@@ -1,223 +1,176 @@
 <template>
-	<div>
-      <v-toolbar flat color="light">
-        <v-toolbar-title>Messages</v-toolbar-title>
-        <v-divider
-          class="mx-2"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-  
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-  
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-      <v-data-table
-        :headers="headers"
-        :items="desserts"
-        hide-actions
-        class="elevation-1"
-      >
-        <template slot="items" slot-scope="props">
-          <td>{{ props.item.name }}</td>
-          <td class="text-xs-right">{{ props.item.calories }}</td>
-          <td class="text-xs-right">{{ props.item.fat }}</td>
-          <td class="text-xs-right">{{ props.item.carbs }}</td>
-          <td class="text-xs-right">{{ props.item.protein }}</td>
-          <td class="justify-center layout px-0">
-            <v-icon
-              small
-              class="mr-2"
-              @click="editItem(props.item)"
-            >
-              edit
-            </v-icon>
-            <v-icon
-              small
-              @click="deleteItem(props.item)"
-            >
-              delete
-            </v-icon>
-          </td>
-        </template>
-        <template slot="no-data">
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
-        </template>
-      </v-data-table>
+    <div>
+        <v-toolbar flat color="light">
+            <v-toolbar-title>Messages</v-toolbar-title>
+            <v-divider class="mx-2" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="700px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout wrap>
+                                <v-flex xs12 sm12 md12>
+                                    <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                                </v-flex>
+								<v-flex xs12 sm12 md12>
+                                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md12>
+                                    <v-textarea solo name="input-7-4" label="Message" v-model="editedItem.message"></v-textarea>
+                                </v-flex>
+                               <v-flex xs12 sm12 md12>
+									<v-text-field v-model="editedItem.date" label="Date"></v-text-field>
+							   </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat @click.native="close">Close</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-toolbar>
+        <v-data-table :headers="headers" :items="computedMessages" :loading="loading" hide-actions class="elevation-1">
+            <template slot="items" slot-scope="props">
+                <td>{{ props.item.name }}</td>
+                <td>{{(props.item.email || '').substring(0, 50) + '…'}}</td>
+                <td>{{ props.item.message }}</td>
+                <td>{{ props.item.date }}</td>
+                <td class="justify-center layout px-0">
+                    <v-icon small class="mr-2" @click="viewDetails(props.item)">
+                        Details
+                    </v-icon>
+                    <v-icon small @click="deleteItem(props.item)">
+                        delete
+                    </v-icon>
+                </td>
+            </template>
+            <template slot="no-data">
+                <v-btn color="primary" @click="initialize">Reset</v-btn>
+            </template>
+        </v-data-table>
     </div>
 </template>
-<style lang="sass">
-
+<style lang="scss">
 </style>
 <script>
+import axios from 'axios';
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
+
 export default {
     data: () => ({
-        dialog: false,
-        headers: [
-            {
-                text: 'Dessert (100g serving)',
+		dialog: false,
+		valid: false,
+        headers: [{
+                text: 'Name',
                 align: 'left',
                 sortable: false,
                 value: 'name'
             },
-            { text: 'Calories', value: 'calories' },
-            { text: 'Fat (g)', value: 'fat' },
-            { text: 'Carbs (g)', value: 'carbs' },
-            { text: 'Protein (g)', value: 'protein' },
-            { text: 'Actions', value: 'name', sortable: false }
+            {
+                text: 'Email',
+                align: 'left',
+                sortable: false,
+                value: 'email'
+            },
+            {
+                text: 'Message',
+                align: 'left',
+                sortable: false,
+                value: 'message'
+            },
+            {
+                text: 'Date',
+                align: 'left',
+                sortable: true,
+                value: 'date'
+            },
+            {
+                text: 'Action',
+                align: 'center',
+                sortable: false
+            },
         ],
-        desserts: [],
+        portfolios: [],
         editedIndex: -1,
+        date: null,
+		menu1: false,
+		loading: false,
         editedItem: {
             name: '',
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0
+            email: "",
+			message: "",
+			date: (new Date()).toISOString()
         },
         defaultItem: {
             name: '',
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0
+            email: "",
+			message: "",
+			date: (new Date()).toISOString()
         }
     }),
 
     computed: {
         formTitle() {
-            return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
+            return this.editedIndex === -1 ? 'New Portfolio' : 'Edit Portfolio';
+        },
+        computedMessages() {
+            return this.$store.getters.messageList || [];
+        },
+        token() {
+            return this.$store.state.token;
+        },
+        computedDateFormatted() {
+            return this.formatDate(this.date)
         }
     },
 
     watch: {
         dialog(val) {
             val || this.close();
+        },
+        date(val) {
+            this.editedItem.date = this.formatDate(this.date)
         }
     },
 
     created() {
         this.initialize();
+		axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
     },
 
     methods: {
         initialize() {
-            this.desserts = [
-                {
-                    name: 'Frozen Yogurt',
-                    calories: 159,
-                    fat: 6.0,
-                    carbs: 24,
-                    protein: 4.0
-                },
-                {
-                    name: 'Ice cream sandwich',
-                    calories: 237,
-                    fat: 9.0,
-                    carbs: 37,
-                    protein: 4.3
-                },
-                {
-                    name: 'Eclair',
-                    calories: 262,
-                    fat: 16.0,
-                    carbs: 23,
-                    protein: 6.0
-                },
-                {
-                    name: 'Cupcake',
-                    calories: 305,
-                    fat: 3.7,
-                    carbs: 67,
-                    protein: 4.3
-                },
-                {
-                    name: 'Gingerbread',
-                    calories: 356,
-                    fat: 16.0,
-                    carbs: 49,
-                    protein: 3.9
-                },
-                {
-                    name: 'Jelly bean',
-                    calories: 375,
-                    fat: 0.0,
-                    carbs: 94,
-                    protein: 0.0
-                },
-                {
-                    name: 'Lollipop',
-                    calories: 392,
-                    fat: 0.2,
-                    carbs: 98,
-                    protein: 0
-                },
-                {
-                    name: 'Honeycomb',
-                    calories: 408,
-                    fat: 3.2,
-                    carbs: 87,
-                    protein: 6.5
-                },
-                {
-                    name: 'Donut',
-                    calories: 452,
-                    fat: 25.0,
-                    carbs: 51,
-                    protein: 4.9
-                },
-                {
-                    name: 'KitKat',
-                    calories: 518,
-                    fat: 26.0,
-                    carbs: 65,
-                    protein: 7
-                }
-            ];
-        },
+			this.loading = true;
 
-        editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item);
+			this.$store.dispatch('fetchMessages')
+			.then(response => {
+				this.loading = false;
+			})
+			.catch(err => {
+				this.loading = false;
+			})
+        },
+        viewDetails(item) {
+            this.editedIndex = this.computedMessages.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
 
         deleteItem(item) {
-            const index = this.desserts.indexOf(item);
-            confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1);
+            if (confirm('Are you sure you want to delete this portfolio?')) {
+                return axios.delete('/messages/' + item.id)
+                    .then(response => {
+                        this.initialize()
+                    })
+                    .catch(errors => {
+						console.error('Error occurred while deleting message')
+                    })
+            }
         },
 
         close() {
@@ -227,14 +180,17 @@ export default {
                 this.editedIndex = -1;
             }, 300);
         },
-
-        save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem);
-            } else {
-                this.desserts.push(this.editedItem);
-            }
-            this.close();
+        formatDate(date) {
+            if (!date) return null
+			date = date.substr(0,10);
+            const [year, month, day] = date.split('-')
+            return `${year}-${month}-${day}`+`T12:01:14.915Z`
+        },
+        parseDate(date) {
+			if (!date) return null
+			date = date.substr(0, 10);
+            const [year, month, day] = date.split('-')
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`+`T12:01:14.915Z`
         }
     }
 };

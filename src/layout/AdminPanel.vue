@@ -43,7 +43,7 @@ export default {
             { icon: 'fas fa-user', path: 'manageuser', text: 'Users' },
             { icon: 'fab fa-blogger', path: 'manageblog', text: 'Blog' },
             { icon: 'fas fa-archive', path: 'manageportfolio', text: 'Portfolio' },
-            { icon: 'fas fa-envelope', path: 'managecontact', text: 'Message' },
+            { icon: 'fas fa-envelope', path: 'viewmessage', text: 'Message' },
 			{ icon: 'far fa-laptop-code', path: 'apidefination', text: 'API Specification' },
         ]
 	}),

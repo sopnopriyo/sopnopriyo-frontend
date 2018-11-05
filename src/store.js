@@ -11,7 +11,9 @@ export default new Vuex.Store({
         token: localStorage.getItem('access_token') || null,
         authUser: null,
 		userList: null,
-		postList: null
+		postList: null,
+		portfolioList: null,
+		messageList: null,
     },
     getters: {
         loggedIn(state) {
@@ -25,6 +27,12 @@ export default new Vuex.Store({
 		},
 		postList(state) {
 			return state.postList
+		},
+		portfolioList(state) {
+			return state.portfolioList;
+		},
+		messageList(state) {
+			return state.messageList;
 		}
     },
     mutations: {
@@ -42,6 +50,12 @@ export default new Vuex.Store({
 		},
 		fetchPosts(state, postList) {
 			state.postList = postList
+		},
+		fetchPortfolios(state, portfolioList) {
+			state.portfolioList = portfolioList
+		},
+		fetchMessages(state, messageList) {
+			state.messageList = messageList;
 		}
     },
     actions: {
@@ -109,6 +123,34 @@ export default new Vuex.Store({
 				return axios.get('/posts')
 				.then(response => {
 					context.commit('fetchPosts', response.data)
+					resolve()
+				})
+				.catch(error => {
+					console.log(error)
+					reject()
+				})
+			})
+		},
+		fetchPortfolios(context) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+			return new Promise((resolve, reject) => {
+				return axios.get('/portfolios')
+				.then(response => {
+					context.commit('fetchPortfolios', response.data)
+					resolve()
+				})
+				.catch(error => {
+					console.log(error)
+					reject()
+				})
+			})
+		},
+		fetchMessages(context) {
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+			return new Promise((resolve, reject) => {
+				return axios.get('/messages')
+				.then(response => {
+					context.commit('fetchMessages', response.data)
 					resolve()
 				})
 				.catch(error => {

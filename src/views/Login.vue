@@ -14,13 +14,13 @@
                         <v-card-title primary-title>
                             <h4>Login</h4>
                         </v-card-title>
-                        <v-form >
+                        <v-form @submit.prevent="performlogin()">
                             <v-text-field prepend-icon="fas fa-user" v-model="fields.username.value" name="Username"
                                 label="Username" :rules="fields.username.rules" required></v-text-field>
                             <v-text-field prepend-icon="fas fa-key" v-model="fields.password.value" name="Password"
                                 label="Password" :rules="fields.password.rules" type="password" required></v-text-field>
                             <v-card-actions>
-                                <v-btn primary large block @click.prevent="performlogin()">Login</v-btn>
+                                <v-btn type="submit" primary large block>Login</v-btn>
                             </v-card-actions>
                         </v-form>
                     </v-card>

@@ -84,8 +84,8 @@ const routes = [{
         }
     },
     {
-        path: '/managecontact',
-        name: 'managecontact',
+        path: '/viewmessage',
+        name: 'viewmessage',
         component: () =>
             import( /* webpackChunkName: "managecontact" */ './views/ManageContact.vue'),
         meta: {
