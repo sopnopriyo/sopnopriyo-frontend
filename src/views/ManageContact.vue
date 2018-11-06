@@ -13,16 +13,16 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                                    <v-text-field v-model="editedItem.name" solo label="Name"></v-text-field>
                                 </v-flex>
 								<v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                                    <v-text-field v-model="editedItem.email" solo label="Email"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
                                     <v-textarea solo name="input-7-4" label="Message" v-model="editedItem.message"></v-textarea>
                                 </v-flex>
                                <v-flex xs12 sm12 md12>
-									<v-text-field v-model="editedItem.date" label="Date"></v-text-field>
+									<v-text-field v-model="editedItem.date" solo label="Date"></v-text-field>
 							   </v-flex>
                             </v-layout>
                         </v-container>

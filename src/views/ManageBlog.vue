@@ -15,14 +15,14 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.title" :rules="formRules.title.rules" label="Title"></v-text-field>
+                                    <v-text-field v-model="editedItem.title" solo :rules="formRules.title.rules" label="Title"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
                                     <v-textarea solo name="input-7-4" :rules="formRules.body.rules" label="Body"
                                         v-model="editedItem.body"></v-textarea>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-select :items="statusOptions" v-model="editedItem.status" :rules="formRules.body.rules"
+                                    <v-select :items="statusOptions" solo v-model="editedItem.status" :rules="formRules.body.rules"
                                         label="Status">
                                     </v-select>
                                 </v-flex>
@@ -30,14 +30,14 @@
                                     <v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40"
                                         lazy transition="scale-transition" offset-y full-width max-width="290px"
                                         min-width="290px">
-                                        <v-text-field slot="activator" v-model="editedItem.date" :rules="formRules.date.rules"
+                                        <v-text-field slot="activator" solo v-model="editedItem.date" :rules="formRules.date.rules"
                                             label="Date" hint="YYYY/MM/DD format" persistent-hint @blur="date = parseDate(editedItem.date)">
                                         </v-text-field>
                                         <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                                     </v-menu>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.coverPhotoUrl" :rules="formRules.coverPhotoUrl.rules"
+                                    <v-text-field v-model="editedItem.coverPhotoUrl" solo :rules="formRules.coverPhotoUrl.rules"
                                         label="Cover Photo URL"></v-text-field>
                                 </v-flex>
                             </v-layout>

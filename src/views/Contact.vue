@@ -12,15 +12,15 @@
                                 </v-alert>
                             </v-flex>
                             <v-flex xs12 sm12 md6>
-                                <v-text-field name="name" v-model="contact.name" :rules="nameRules" label="Name"
+                                <v-text-field name="name" v-model="contact.name" solo :rules="nameRules" label="Name"
                                     required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm12 md6>
-                                <v-text-field name="email" v-model="contact.email" :rules="emailRules" label="E-mail"
+                                <v-text-field name="email" v-model="contact.email" solo :rules="emailRules" label="E-mail"
                                     required></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm12 md12>
-                                <v-textarea name="message" label="Message" v-model="contact.message" :rules="messageRules"></v-textarea>
+                                <v-textarea name="message" label="Message" solo v-model="contact.message" :rules="messageRules"></v-textarea>
                             </v-flex>
                             <v-flex xs12 sm12 md2>
                                 <v-btn type="submit" primary medium block>Send</v-btn>

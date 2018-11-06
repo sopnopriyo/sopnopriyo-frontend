@@ -15,24 +15,24 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.login" label="Username"></v-text-field>
+                                    <v-text-field v-model="editedItem.login" solo label="Username"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                                    <v-text-field v-model="editedItem.email" solo label="Email"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.firstName" label="First Name"></v-text-field>
+                                    <v-text-field v-model="editedItem.firstName" solo label="First Name"></v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="editedItem.lastName" label="Last Name"></v-text-field>
+                                    <v-text-field v-model="editedItem.lastName" solo label="Last Name"></v-text-field>
                                 </v-flex>
-                                <v-flex xs12 sm6 md8>
+                                <v-flex xs12 sm12 md12>
                                     <v-combobox 
 										v-model="editedItem.authorities" 
 										:items="roles" 
 										label="Roles" 
 										multiple
-										chips
+										solo
                                     ></v-combobox>
                                 </v-flex>
                             </v-layout>
@@ -93,20 +93,24 @@ export default {
             },
             {
                 text: 'Email',
-                value: 'email'
+				value: 'email',
+				align: 'left',
             },
             {
                 text: 'First Name',
-                value: 'firstName'
+				value: 'firstName',
+				align: 'left',
             },
             {
                 text: 'Last Name',
-                value: 'lastName'
+				value: 'lastName',
+				align: 'left',
             },
             {
                 text: 'Authorities',
                 value: 'authorities',
-                sortable: false
+				sortable: false,
+				align: 'left',
             },
             {
                 text: 'Actions',
