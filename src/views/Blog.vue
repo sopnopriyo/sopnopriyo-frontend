@@ -4,7 +4,7 @@
             <v-flex xs12 md12>
                 <div v-for="post in computedPosts" :key="post.title" class="mb-2">
                     <v-card hover>
-                        <v-card-media class="white--text" height="350px" :src="'data:'+post.coverImageContentType+';base64,'+post.coverImage">
+                        <v-card-media class="white--text" :src="post.coverPhotoUrl">
                             <v-container fill-height fluid>
                                 <v-layout>
                                     <v-flex xs12 align-end d-flex>
