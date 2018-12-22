@@ -203,14 +203,13 @@ export default {
         save() {
             let savePromise;
             if (this.editedIndex > -1) {
-				console.log(this.editedItem)
                 savePromise = axios.put('/users', this.editedItem)
             } else {
                 savePromise = axios.post('/users', {
                     firstName: this.editedItem.firstName,
                     lastName: this.editedItem.lastName,
                     login: this.editedItem.login,
-                    authorities: this.editItem.authorities,
+                    authorities: this.editedItem.authorities,
                     email: this.editedItem.email
                 })
             }
