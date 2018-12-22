@@ -104,7 +104,7 @@ export default {
     computed: {
         loggedIn() {
             return this.$store.getters.loggedIn;
-        }
+		},
     },
 };
 </script>
