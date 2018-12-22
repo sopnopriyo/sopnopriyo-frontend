@@ -14,15 +14,15 @@
 					<v-img  src="shahin.png" aspect-ratio="1" class="home-shahin-image"></v-img>
 				</v-flex>
 				<v-flex xs12 sm12 md9 class="home-text-body">
-I'm a young Software Engineer specialized in Web Development.
+I'm a young Software Engineer specialized in complete life cycle of Web Development.
 
-I've received a Bachelor degree with first class honour in Software Engineering from University of Malaya, Malaysia in 2018.
+I've received a Bachelor degree with distinction in Software Engineering from University of Malaya, Malaysia in 2018.
 
-Currently, I'm working as a Software Developer at Uilicious Pte. Ltd in Singapore. Here I'm involved in developing the customer facing Web Application.
+Currently, I'm working as a Software Developer at Uilicious Pte. Ltd in Singapore. Here I'm involved in developing the customer facing Web Application and improving the Uilicious UI Testing Platform by Adding new feature and maintaining it.
 
 During my career of {{inYears}} year and {{inMonths}} month, I have worked on quite a number of projects using a lot of cutting edge technologies but my favorite stack right now is Vue.js on the frontend and Spring Boot on the backend. 
 
-I'm always studying to improve my skills, reading books and press about the new development trends.
+I have always been studying to improve my skills, reading books and press about the new development trends and best practices.
 
 I learn fast, I'm an excellent teammate and problem solver. I like to learn from my teammates and also to help them to grow whenever I can.
 				</v-flex>

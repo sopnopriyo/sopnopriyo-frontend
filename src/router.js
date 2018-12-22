@@ -20,7 +20,15 @@ const routes = [{
         meta: {
             title: "Sopnopriyo - Blog"
         }
-
+	},
+	{
+        path: '/blog/:id',
+        name: 'singlepost',
+        component: () =>
+            import( /* webpackChunkName: "singlepost" */ './views/SinglePost.vue'),
+        meta: {
+            title: "Sopnopriyo - Blog"
+        }
     },
     {
         path: '/contact',

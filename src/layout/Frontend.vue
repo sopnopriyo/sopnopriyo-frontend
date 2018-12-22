@@ -1,19 +1,6 @@
 <template>
     <v-app>
-        <!-- <v-toolbar color="purple" dense fixed clipped-left app>
-            <v-toolbar-title>
-                <router-link to="/" class="white--text" tag="span" style="cursor: pointer">
-                    Sopnopriyo
-                </router-link>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-                <v-btn v-for="item in items" :key="item.path" :to="item.path" flat ripple class="white--text">{{
-                    item.text}}</v-btn>
-            </v-toolbar-items>
-        </v-toolbar> -->
-
-        <nav>
+		<nav>
             <v-toolbar color="purple" dense fixed clipped-left class="hidden-sm-and-down">
                 <v-toolbar-title>
                      <router-link to="/" class="white--text" tag="span" style="cursor: pointer">
