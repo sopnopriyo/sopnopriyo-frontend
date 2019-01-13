@@ -86,7 +86,7 @@
 	    },
 	    methods: {
 	        fetchPost() {
-	            axios.get("/posts/" + this.currentPostId)
+	            axios.get("/blogs/" + this.currentPostId)
 	                .then(response => {
 						this.post = response.data;
 						

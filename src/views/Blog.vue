@@ -4,10 +4,10 @@
 			<v-progress-circular :indeterminate="loading" color="purple"></v-progress-circular>
 		</v-layout>
 	</v-container>
-    <v-container v-else class="mt-5">
+    <v-container v-else class="mt-5" grid-list-md text-xs-center>
         <v-layout row wrap align-center>
-            <v-flex xs12 md12>
-                <div v-for="post in computedPosts" :key="post.title" class="mb-2">
+            <v-flex xs12 sm6 md6 v-for="post in computedPosts" :key="post.title">
+                <div>
                     <v-card hover>
                         <v-card-media class="white--text blur-bottom" :src="post.coverPhotoUrl" height="250px">
 							<v-layout>
@@ -22,7 +22,7 @@
                                 <strong>{{(post.date ||'').substring(0,10)}}</strong>
                             </div>
 							<pre>
-{{ (post.body).substring(0,150) }} <router-link :to="{ name: 'singlepost', params: { id: post.id }}">Read More</router-link>
+{{ (post.body).substring(0,150) }} <router-link :to="{ name: 'singlepost', params: { id: post.slug }}">Read More</router-link>
 							</pre>
                         </v-card-text>
                     </v-card>
@@ -83,19 +83,9 @@ export default {
     },
     methods: {
         fetchPosts() {
-            axios.get("/posts")
+            axios.get("/blogs?sort=date,desc")
                 .then(response => {
 					this.posts = response.data;
-					// Set tags
-					try {
-						$("meta[property=\"og:title\"]")[0].content = 'Sopnopriyo - Blog';
-						$("meta[property=\"og:url\"]")[0].content = window.location.href;
-						$("meta[property=\"og:description\"]")[0].content = 'Read articles from Sopnopriyo regularly about many exciting web technologies';
-						// Overwrite
-
-					} catch (e) {
-						console.error("Error setting meta tags: ", e);
-					}
                 })
         }
     }

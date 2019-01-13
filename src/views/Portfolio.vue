@@ -7,7 +7,7 @@
     <v-container v-else class="mt-5" grid-list-md text-xs-center>
         <v-layout row wrap align-center>
             <v-flex xs12 sm6 md4 v-for="portfolio in computedPortfolios" :key="portfolio.title">
-                <div >
+                <div>
                     <v-card hover>
                         <v-card-media class="white--text blur-bottom" :src="portfolio.coverPhotoUrl" height="250px">
 							<v-layout>

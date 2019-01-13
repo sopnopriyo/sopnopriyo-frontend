@@ -95,16 +95,19 @@ export default {
                 text: 'Email',
 				value: 'email',
 				align: 'left',
+				sortable: false,
             },
             {
                 text: 'First Name',
 				value: 'firstName',
 				align: 'left',
+				sortable: false,
             },
             {
                 text: 'Last Name',
 				value: 'lastName',
 				align: 'left',
+				sortable: false,
             },
             {
                 text: 'Authorities',
