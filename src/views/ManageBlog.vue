@@ -132,7 +132,7 @@ export default {
         editedItem: {
             title: '',
             body: "",
-			status: "",
+			status: "DRAFT",
 			slug: "",
 			date: (new Date()).toISOString(),
             coverPhotoUrl: ''
@@ -140,7 +140,7 @@ export default {
         defaultItem: {
             title: '',
             body: "",
-			status: "",
+			status: "DRAFT",
 			slug: '',
 			date: (new Date()).toISOString(),
             coverPhotoUrl: ''
@@ -200,8 +200,13 @@ export default {
     methods: {
         initialize() {
 			this.loading = true;
+			
+			let paginationFilter = {};
+			paginationFilter.sort = "date,desc"
+			paginationFilter.size = 5
+			paginationFilter.page = 0
 
-			this.$store.dispatch('fetchPosts')
+			this.$store.dispatch('fetchPosts', paginationFilter)
 			.then(response => {
 				this.loading = false;
 			})

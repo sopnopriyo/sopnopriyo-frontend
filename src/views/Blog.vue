@@ -85,7 +85,7 @@ export default {
         fetchPosts() {
             axios.get("/blogs?sort=date,desc")
                 .then(response => {
-					this.posts = response.data;
+					this.posts = response.data.content;
                 })
         }
     }
