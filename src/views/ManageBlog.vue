@@ -17,6 +17,9 @@
                                 <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="editedItem.title" solo :rules="formRules.title.rules" label="Title"></v-text-field>
                                 </v-flex>
+								<v-flex xs12 sm12 md12>
+                                    <v-text-field v-model="editedItem.slug" solo :rules="formRules.slug.rules" label="Slug"></v-text-field>
+                                </v-flex>
                                 <v-flex xs12 sm12 md12>
                                     <v-textarea solo name="input-7-4" :rules="formRules.body.rules" label="Body"
                                         v-model="editedItem.body"></v-textarea>
@@ -53,7 +56,7 @@
                 </v-card>
             </v-dialog>
         </v-toolbar>
-        <v-data-table :headers="headers" :items="computedPosts" :loading="loading" hide-actions class="elevation-1">
+        <v-data-table :headers="headers" :items="computedPosts" :loading="loading" class="elevation-1">
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.title }}</td>
                 <td>{{(props.item.body || '').substring(0, 50) + '…'}}</td>
@@ -130,6 +133,7 @@ export default {
             title: '',
             body: "",
 			status: "",
+			slug: "",
 			date: (new Date()).toISOString(),
             coverPhotoUrl: ''
         },
@@ -137,12 +141,16 @@ export default {
             title: '',
             body: "",
 			status: "",
+			slug: '',
 			date: (new Date()).toISOString(),
             coverPhotoUrl: ''
         },
 		formRules: {
 			title: {
 				rules:  [v => !!v || 'Title is required'],
+			},
+			slug: {
+				rules:  [v => !!v || 'Slug is required'],
 			},
 			body: {
 				rules:  [v => !!v || 'Body is required'],
@@ -171,7 +179,7 @@ export default {
         },
         computedDateFormatted() {
             return this.formatDate(this.date)
-        }
+		}
     },
 
     watch: {
@@ -184,7 +192,8 @@ export default {
     },
 
     created() {
-        this.initialize();
+		this.initialize();
+		this.defaultItem.slug = this.computedSlug;
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
     },
 
@@ -236,7 +245,8 @@ export default {
                 savePromise = axios.put('/posts', this.editedItem)
             } else {
                 savePromise = axios.post('/posts', {
-                    title: this.editedItem.title,
+					title: this.editedItem.title,
+					slug: this.editedItem.slug,
                     body: this.editedItem.body,
                     status: this.editedItem.status,
                     date: this.editedItem.date,

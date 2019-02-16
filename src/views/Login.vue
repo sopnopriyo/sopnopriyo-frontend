@@ -22,6 +22,7 @@
                             <v-card-actions>
                                 <v-btn type="submit" primary large block>Login</v-btn>
                             </v-card-actions>
+							<router-link :to="{ name: 'resetPasswordInit'}">Reset Password</router-link>
                         </v-form>
                     </v-card>
                 </v-container>

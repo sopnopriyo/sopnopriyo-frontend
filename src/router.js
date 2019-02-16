@@ -112,8 +112,34 @@ const routes = [{
             adminAuth: true,
             userAuth: true
         }
-    },
-
+	},
+	{
+		path: '/account-activate/:activationKey',
+		name: 'accountActivate',
+		component: () => 
+			import( /* webpackChunkName: "accountActivate" */ './views/ResetPasswordFinish.vue'),
+		meta: {
+			title: "Sopnopriyo - Account Activation"
+		}
+	},
+	{
+		path: '/reset-password-finish/:resetKey',
+		name: 'resetPasswordFinish',
+		component: () => 
+			import( /* webpackChunkName: "resetPasswordFinish" */ './views/ResetPasswordFinish.vue'),
+		meta: {
+			title: "Sopnopriyo - Password Reset"
+		}
+	},
+	{
+		path: '/reset-password-init',
+		name: 'resetPasswordInit',
+		component: () => 
+			import( /* webpackChunkName: "resetPasswordInit" */ './views/ResetPasswordInit.vue'),
+		meta: {
+			title: "Sopnopriyo - Password Reset"
+		}
+	}
 ];
 
 const router = new Router({
