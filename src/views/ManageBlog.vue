@@ -56,7 +56,13 @@
                 </v-card>
             </v-dialog>
         </v-toolbar>
-        <v-data-table :headers="headers" :items="computedPosts" :loading="loading" class="elevation-1">
+        <v-data-table 
+		:total-items="totalPostSize"
+      	:pagination.sync="pagination"
+		:headers="headers" 
+		:items="computedPosts" 
+		:loading="loading" 
+		class="elevation-1">
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.title }}</td>
                 <td>{{(props.item.body || '').substring(0, 50) + '…'}}</td>
@@ -128,6 +134,10 @@ export default {
         editedIndex: -1,
         date: null,
 		menu1: false,
+		pagination: {
+			page: 1,
+			rowsPerPage: 10
+		},
 		loading: false,
         editedItem: {
             title: '',
@@ -172,13 +182,20 @@ export default {
             return this.editedIndex === -1 ? 'New Post' : 'Edit Post';
         },
         computedPosts() {
-            return this.$store.getters.postList || [];
+			if (this.$store.getters.postListResponse) {
+				return this.$store.getters.postListResponse.content || [];
+			}
         },
         token() {
             return this.$store.state.token;
         },
         computedDateFormatted() {
             return this.formatDate(this.date)
+		},
+		totalPostSize() {
+			if (this.$store.getters.postListResponse) {
+				return this.$store.getters.postListResponse.totalElements || 0;
+			}
 		}
     },
 
@@ -188,7 +205,13 @@ export default {
         },
         date(val) {
             this.editedItem.date = this.formatDate(this.date)
-        }
+		},
+		pagination: {
+			handler () {
+				this.initialize();
+			},
+			deep: true
+		}
     },
 
     created() {
@@ -203,8 +226,8 @@ export default {
 			
 			let paginationFilter = {};
 			paginationFilter.sort = "date,desc"
-			paginationFilter.size = 5
-			paginationFilter.page = 0
+			paginationFilter.size = this.pagination.rowsPerPage
+			paginationFilter.page = this.pagination.page - 1 
 
 			this.$store.dispatch('fetchPosts', paginationFilter)
 			.then(response => {

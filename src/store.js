@@ -10,8 +10,8 @@ export default new Vuex.Store({
     state: {
         token: localStorage.getItem('access_token') || null,
         authUser: null,
-		userList: null,
-		postList: null,
+		userListResponse: null,
+		postListResponse: null,
 		portfolioList: null,
 		messageList: null,
     },
@@ -22,11 +22,11 @@ export default new Vuex.Store({
         authUser(state) {
             return state.authUser
         },
-        userList(state) {
-            return state.userList
+        userListResponse(state) {
+            return state.userListResponse
 		},
-		postList(state) {
-			return state.postList
+		postListResponse(state) {
+			return state.postListResponse
 		},
 		portfolioList(state) {
 			return state.portfolioList;
@@ -45,11 +45,11 @@ export default new Vuex.Store({
         authenticateUser(state, authUser) {
             state.authUser = authUser
         },
-        fetchUsers(state, userList) {
-            state.userList = userList
+        fetchUsers(state, userListResponse) {
+            state.userListResponse = userListResponse
 		},
-		fetchPosts(state, postList) {
-			state.postList = postList
+		fetchPosts(state, postListResponse) {
+			state.postListResponse = postListResponse
 		},
 		fetchPortfolios(state, portfolioList) {
 			state.portfolioList = portfolioList
@@ -117,10 +117,12 @@ export default new Vuex.Store({
                     })
             });
 		},
-		fetchPosts(context) {
+		fetchPosts(context, pagination) {
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 			return new Promise((resolve, reject) => {
-				return axios.get('/posts')
+				return axios.get('/posts', {
+					params: pagination
+				})
 				.then(response => {
 					context.commit('fetchPosts', response.data)
 					resolve()

@@ -151,10 +151,11 @@ export default {
             return this.editedIndex === -1 ? 'New User' : 'Edit User';
         },
         userList() {
-            return this.$store.getters.userList || [];
+			if (this.$store.getters.userListResponse) {
+				return this.$store.getters.userListResponse.content || [];
+			}
         }
     },
-
     watch: {
         dialog(val) {
             val || this.close();
