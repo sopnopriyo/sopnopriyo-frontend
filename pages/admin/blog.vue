@@ -29,7 +29,7 @@
                       <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="editedItem.slug" label="Slug"></v-text-field>
+                      <v-text-field v-model="editedItem.slug" :set="editedItem.slug = getSlugFromTitle(editedItem.title)" label="Slug"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
                       <v-textarea outlined v-model="editedItem.body" label="Body"></v-textarea>
@@ -82,7 +82,7 @@
                             label="Date"
                             hint="YYYY/MM/DD format"
                             persistent-hint
-                            @blur="date = parseDate(editedItem.date)"
+                            :set="date = parseDate(editedItem.date)"
                             v-on="on"
                           ></v-text-field>
                         </template>
@@ -232,7 +232,7 @@ export default {
       if (this.$store.state.blog.postListResponse) {
         return this.$store.state.blog.postListResponse.totalElements || 0;
       }
-    }
+    },
   },
 
   watch: {
@@ -340,6 +340,12 @@ export default {
         `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}` +
         `T12:01:14.915Z`
       );
+    },
+    getSlugFromTitle(title) {
+      return title.toString().toLowerCase()
+        .replace(/ /g,'-')
+        .replace(/[^\w-]+/g,'')
+        ;
     }
   }
 };
