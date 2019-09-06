@@ -34,36 +34,6 @@
                     <v-col cols="12" sm="12" md="12">
                       <v-textarea outlined v-model="editedItem.body" label="Body"></v-textarea>
                     </v-col>
-                    <!-- <v-col cols="12" sm="12" md="12">
-                      <v-menu
-                        ref="menu1"
-                        :close-on-content-click="false"
-                        v-model="menu1"
-                        :nudge-right="40"
-                        lazy
-                        transition="scale-transition"
-                        offset-y
-                        full-width
-                        max-width="290px"
-                        min-width="290px"
-                      >
-                        <template v-slot:activator="{ on }">
-                          <v-text-field
-                            slot="activator"
-                            solo
-                            v-model="editedItem.date"
-                            :rules="formRules.date.rules"
-                            label="Date"
-                            hint="YYYY/MM/DD format"
-                            persistent-hint
-                            @blur="date = parseDate(editedItem.date)"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker v-model="date"></v-date-picker>
-                      </v-menu>
-                    </v-col>-->
-
                     <v-col cols="12" sm="12" md="12">
                       <v-menu
                         ref="menu1"
