@@ -1,26 +1,28 @@
 <template>
-  <v-container v-if="loading" fluid fill-height>
-    <v-layout align-center justify-center>
-      <v-progress-circular :indeterminate="loading" color="purple"></v-progress-circular>
-    </v-layout>
-  </v-container>
-  <v-container v-else class="mt-5" grid-list-md text-xs-center>
-    <v-layout row wrap align-center>
-      <v-flex xs12 sm6 md4 v-for="portfolio in computedPortfolios" :key="portfolio.title">
-        <div>
-          <v-card hover>
-            <v-img :src="portfolio.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
-            <v-card-title class="title">{{ portfolio.title }}</v-card-title>
-            <v-card-text>
-              <pre>
+  <div>
+    <header class="jumbotron text-center">
+      <div class="header-content">
+        <h1>Learn more about my projects and research works</h1>
+      </div>
+    </header>
+    <v-container class="mt-5" grid-list-md text-xs-center>
+      <v-layout row wrap align-center>
+        <v-flex xs12 sm6 md4 v-for="portfolio in computedPortfolios" :key="portfolio.title">
+          <div>
+            <v-card hover>
+              <v-img :src="portfolio.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
+              <v-card-title class="title">{{ portfolio.title }}</v-card-title>
+              <v-card-text>
+                <pre>
 {{portfolio.description}}
 							</pre>
-            </v-card-text>
-          </v-card>
-        </div>
-      </v-flex>
-    </v-layout>
-  </v-container>
+              </v-card-text>
+            </v-card>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 <style lang="scss" scoped>
 pre {
@@ -56,7 +58,10 @@ pre {
 <script>
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
 
 export default {
   head: {
@@ -66,43 +71,37 @@ export default {
         hid: "description",
         name: "description",
         content:
-          "This is my personal online portfolio website with all my favorite projects I have done."
+          "My personal online portfolio website with all my favorite projects I have done."
       },
-      { name: "og:title", content: "Sopnopriyo - Contact" },
       {
+        hid: "og:title",
+        name: "og:title",
+        content: "Sopnopriyo - Software Engineering Portfolio"
+      },
+      {
+        hid: "og:description",
         name: "og:description",
         content:
-          "This is my personal online portfolio website with all my favorite projects I have done."
+          "My personal online portfolio website with all my favorite projects I have done."
       },
-      { name: "og:type", content: "website" },
-      { name: "og:url", content: "https://sopnopriyo.com/contact" },
       {
+        hid: "og:type",
+        name: "og:type",
+        content: "website"
+      },
+      { name: "og:url", content: "https://sopnopriyo.com/portfolio" },
+      {
+        hid: "og:image",
         name: "og:image",
-        content: "https://sopnopriyo.com/img/opengraph/home/home.jpg"
+        content: "https://sopnopriyo.com/img/opengraph/home.jpg"
       }
     ]
   },
-  data: () => {
-    return {
-      portfolios: [],
-      loading: true
-    };
-  },
-  computed: {
-    computedPortfolios() {
-      return this.portfolios;
-    }
-  },
-  created() {
-    this.fetchPortfolios();
-    this.loading = false;
-  },
-  methods: {
-    fetchPortfolios() {
-      axios.get("/portfolios").then(response => {
-        this.portfolios = response.data;
-      });
-    }
+  async asyncData(context) {
+    // fetch the post from the API
+    return axios.get("/portfolios?sort=date,desc").then(res => {
+      return { computedPortfolios: res.data };
+    });
   }
 };
 </script>

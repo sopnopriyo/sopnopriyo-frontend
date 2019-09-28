@@ -11,10 +11,52 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        hid: "description",
+        name: "description",
+        content:
+          "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
+      },
+      {
+        hid: "og:title",
+        name: "og:title",
+        content:
+          "Sopnopriyo - Tech research findings, reviews, stories and updates from Sopnopriyo !"
+      },
+      {
+        hid: "og:description",
+        name: "og:description",
+        content:
+          "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
+      },
+      {
+        hid: "og:type",
+         name: "og:type",
+        content: "website" 
+      },
+      {
+        hid: "og:url",
+        name: "og:url",
+        content: "https://sopnopriyo.com/" 
+      },
+      {
+        hid: "og:image",
+        hid: "og:image",
+name: "og:image",
+        content: "https://sopnopriyo.com/img/opengraph/home.jpg"
+      }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
+      { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' },
+    ],
+    script: [
+    ],
+  },
+  env: {
+    DEV_API: 'http://localhost:3000/api',
+    PROD_API: 'https://sopnopriyo.com/api'
   },
   /*
   ** Customize the progress-bar color
@@ -24,8 +66,15 @@ export default {
   ** Global CSS
   */
   css: [
+    // SCSS file in the project
+    '@/assets/css/main.scss'
   ],
-
+  styleResources:{
+    scss: [
+      '@/assets/css/_breakpoints.scss',
+      '@/assets/css/_mixins.scss',
+     ]
+  },
   generate: {
     subFolders: true
   },
@@ -41,7 +90,7 @@ export default {
   /*
   ** Nuxt.js dev-modules
   */
-  devModules: [
+ buildModules: [
     '@nuxtjs/vuetify',
   ],
   /*
@@ -53,17 +102,18 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/proxy',
     '@nuxtjs/auth',
+    '@nuxtjs/style-resources',
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://sopnopriyo.com",
     proxy: true // Can be also an object with default options
   },
   proxy: {
-    '/api/': 'http://192.168.1.182:8080/',
+    '/api/': 'https://sopnopriyo.com/',
   },
   /*
   ** vuetify module configuration

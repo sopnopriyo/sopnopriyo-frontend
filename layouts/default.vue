@@ -1,66 +1,92 @@
 <template>
-  <v-app>
-    <nav>
-      <v-toolbar color="purple" dense fixed class="hidden-sm-and-down">
-        <v-toolbar-title>
-          <router-link to="/" class="white--text" tag="span" style="cursor: pointer">Sopnopriyo</router-link>
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn v-for="item in items" :key="item.path" :to="item.path" ripple class="white--text">
-            {{
-            item.text}}
-          </v-btn>
-          <v-btn v-if="loggedIn" class="white--text" @click="logout()">Log Out</v-btn>
-          <v-btn v-else class="white--text" :to="'/login'">Login</v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-      <div class="hidden-md-and-up">
-        <v-expansion-panel>
-          <v-expansion-panel-content class="purple">
-            <div slot="header">
-              <router-link to="/" tag="span" style="cursor: pointer">Sopnopriyo</router-link>
-            </div>
-            <v-card v-for="item in items" :key="item.path">
-              <router-link :to="item.path" tag="span">
-                <v-card-text class="purple white--text">{{item.text}}</v-card-text>
-              </router-link>
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
+  <div id="__container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nuxt-link class="navbar-brand" to="/">Sopnopriyo</nuxt-link>
+      <button
+        class="navbar-toggler navbar-toggler-right"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navb"
+        @click="toggleNavMenu()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" v-bind:class="{ 'show': isMenuOpen}" id="navb">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" v-for="item in items" :key="item.path">
+            <nuxt-link class="nav-link" :to="item.path">{{item.text}}</nuxt-link>
+          </li>
+          <li class="nav-item">
+            <nuxt-link v-if="!loggedIn" class="nav-link" to="/login">
+              <strong>Login</strong>
+            </nuxt-link>
+            <nuxt-link v-else class="nav-link" to="#" @click="logout()">
+              Sign Out
+              <i class="fa fa-sign-out"></i>
+            </nuxt-link>
+          </li>
+        </ul>
       </div>
     </nav>
-    <v-content>
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </v-content>
-    <v-footer height="auto">
-      <v-card class="flex" tile>
-        <v-card-title class="purple lighten-1 white--text text-xs-center justify-center">
-          <v-btn
-            v-for="socialLink in socialLinks"
-            target="blank"
-            :href="socialLink.link"
-            :key="socialLink.icon"
-            class="mx-3"
-            dark
-            icon
-          >
-            <v-icon medium>{{ socialLink.icon }}</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-actions class="purple justify-center">
-          &copy;2019 —
-          <strong>Sopnopriyo</strong>
-        </v-card-actions>
-      </v-card>
-    </v-footer>
-  </v-app>
+
+    <main class="content">
+      <router-view></router-view>
+    </main>
+
+    <footer class="social-footer">
+      <div class="social-footer-icons">
+        <ul class="menu simple">
+          <li v-for="socialLink in socialLinks" :key="socialLink.link">
+            <a :href="socialLink.link">
+              <i :class="socialLink.icon" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="social-footer-left">
+        &copy;2019 —
+        <strong>Sopnopriyo</strong>
+      </div>
+    </footer>
+  </div>
 </template>
-<style>
-.theme--light.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
-  background-color: unset;
+<style lang="scss">
+.content {
+  position: relative;
+  min-height: 80vh;
+}
+.social-footer {
+  padding: 1rem;
+  background: #2c3840;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #f4f4f4;
+
+  .social-footer-icons {
+    margin-bottom: 20px;
+    ul {
+      display: inline-flex;
+    }
+    li {
+      margin-left: 20px;
+      font-size: 20px;
+    }
+    li:last-of-type {
+      margin-right: 0;
+    }
+
+    .fa {
+      font-size: 1.8rem;
+      color: #f4f4f4;
+      &:hover {
+        transition: color 0.3s ease-in;
+        color: #41525e;
+      }
+    }
+  }
 }
 </style>
 <script>
@@ -70,48 +96,49 @@ export default {
   data: () => ({
     items: [
       {
-        path: "/",
-        text: "Home"
-      },
-      {
         path: "/blog",
         text: "Blog"
       },
       {
         path: "/portfolio",
-        text: "portfolio"
+        text: "Portfolio"
       },
       {
         path: "/contact",
         text: "Contact"
+      },
+      {
+        path: "/about",
+        text: "About Me"
       }
     ],
     socialLinks: [
       {
-        icon: "fab fa-facebook",
+        icon: "fa fa-facebook",
         link: "https://facebook.com/sopnopriyoo/"
       },
       {
-        icon: "fab fa-instagram",
+        icon: "fa fa-instagram",
         link: "https://www.instagram.com/sopno.priyo/"
       },
       {
-        icon: "fab fa-twitter",
+        icon: "fa fa-twitter",
         link: "https://twitter.com/sopnopriyo"
       },
       {
-        icon: "fab fa-linkedin",
+        icon: "fa fa-linkedin",
         link: "https://www.linkedin.com/in/sopnopriyo/"
       },
       {
-        icon: "fab fa-github",
+        icon: "fa fa-github",
         link: "https://github.com/sopnopriyo/sopnopriyo"
       },
       {
-        icon: "fab fa-stack-overflow",
+        icon: "fa fa-stack-overflow",
         link: "https://stackoverflow.com/users/4778904/shahin-alam"
       }
-    ]
+    ],
+    isMenuOpen: false
   }),
   computed: {
     loggedIn() {
@@ -122,6 +149,11 @@ export default {
     logout() {
       Cookie.remove("auth");
       this.$store.commit("auth/setAuth", null);
+    },
+    toggleNavMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+
+      console.log(this.isMenuOpen);
     }
   }
 };

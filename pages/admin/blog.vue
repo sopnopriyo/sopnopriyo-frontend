@@ -29,7 +29,11 @@
                       <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="editedItem.slug" :set="editedItem.slug = getSlugFromTitle(editedItem.title)" label="Slug"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.slug"
+                        :set="editedItem.slug = getSlugFromTitle(editedItem.title)"
+                        label="Slug"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
                       <v-textarea outlined v-model="editedItem.body" label="Body"></v-textarea>
@@ -104,7 +108,10 @@
 </style>
 <script>
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
 
 export default {
   layout: "admin-panel",
@@ -202,7 +209,7 @@ export default {
       if (this.$store.state.blog.postListResponse) {
         return this.$store.state.blog.postListResponse.totalElements || 0;
       }
-    },
+    }
   },
 
   watch: {
@@ -312,10 +319,11 @@ export default {
       );
     },
     getSlugFromTitle(title) {
-      return title.toString().toLowerCase()
-        .replace(/ /g,'-')
-        .replace(/[^\w-]+/g,'')
-        ;
+      return title
+        .toString()
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]+/g, "");
     }
   }
 };

@@ -1,6 +1,9 @@
 import axios from 'axios';
 import Cookie from "js-cookie";
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
 const state = () => ({
     auth: null,
     authUser: null

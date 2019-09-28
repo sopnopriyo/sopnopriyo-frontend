@@ -61,7 +61,10 @@ pre {
 </style>
 <script>
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
 
 export default {
   head() {
@@ -71,57 +74,38 @@ export default {
         {
           hid: "description",
           name: "description",
-          content:
-            "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
+          content: this.post.body
         },
-        { name: "og:title", content: this.post.title },
+        { hid: "og:title", name: "og:title", content: this.post.title },
         {
+          hid: "og:description",
           name: "og:description",
-          content:
-            "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
+          content: this.post.body
         },
-        { name: "og:type", content: "website" },
+        { hid: "og:type", name: "og:type", content: "website" },
         {
+          hid: "og:url",
           name: "og:url",
           content: "https://sopnopriyo.com/blog/" + this.post.slug
         },
         {
+          hid: "og:image",
           name: "og:image",
           content: this.post.coverPhotoUrl
         }
       ]
     };
   },
-  data: () => {
+  data() {
     return {
-      post: {},
-      currentPostSlug: ""
+      post: {}
     };
   },
-  created() {
-    this.currentPostSlug = this.$route.params.slug;
-    this.fetchPost();
-  },
-  methods: {
-    fetchPost() {
-      if (this.currentPostSlug) {
-        axios.get("/blogs/" + this.currentPostSlug).then(response => {
-          this.post = response.data;
-        });
-      }
-    }
-  },
-  watch: {
-    "$route.params.slug": {
-      handler() {
-        if (this.$route.params.slug != undefined) {
-          this.currentPostSlug = this.$route.params.slug;
-          this.fetchPost();
-        }
-      },
-      deep: true,
-      immediate: true
-    }
+  async asyncData(context) {
+    // fetch the post from the API
+    return axios.get(`/blogs/${context.params.slug}`).then(res => {
+      return { post: res.data };
+    });
   }
 };
 </script>

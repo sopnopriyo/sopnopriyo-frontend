@@ -1,88 +1,325 @@
 <template>
-  <v-layout column>
-    <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
-      <v-layout align-center fill-height class="white--text">
-        <v-flex align-center justify-center text-center class="text-md-center">
-          <h1 class="display-2 font-weight-black mb-4">Full Stack Web Developer Based In Singapore</h1>
-          <h2 class="headline font-weight-small mb-4">
-            Currently delivering digital transformation powered by creativity at Isobar Singapore. Follow my engineering research findings and work at my
-            <a
-              href="/blog"
-            >Blog</a> and
-            <a href="/portfolio">Portfolio</a>
-          </h2>
-        </v-flex>
-      </v-layout>
-    </v-parallax>
-    <v-container>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md3>
-          <v-img src="img/shahin.jpg" aspect-ratio="1" class="home-shahin-image"></v-img>
-        </v-flex>
-        <v-flex xs12 sm12 md9 class="home-text-body">
-          I'm a young Software Engineer specialized in complete life cycle of Web Development.
-          I've received a Bachelor degree with distinction in Software Engineering from University of Malaya, Malaysia in 2018.
-          Currently, I'm working as a Software Engineer at Isobar Singapore. Here I'm involved in plan, design, implement and deploying robust web application.
-          During my career of {{inYears}} year and {{inMonths}} month, I have worked on quite a number of projects using a lot of cutting edge technologies but my favorite stack right now is Vue.js on the frontend and Spring Boot on the backend.
-          I have always been studying to improve my skills, reading books and press about the new development trends and best practices.
-          I learn fast, I'm an excellent teammate and problem solver. I like to learn from my teammates and also to help them to grow whenever I can.
-        </v-flex>
-      </v-layout>
-      <v-layout>
-        <v-flex xs12 sm12 md12>
-          <v-timeline align-top>
-            <v-timeline-item
-              v-for="(timeline, i) in timelines"
-              :color="timeline.color"
-              :icon="timeline.icon"
-              :key="i"
-              fill-dot
-            >
-              <v-card :color="timeline.color" dark>
-                <v-card-title class="subheading">
-                  {{timeline.organization}} &nbsp;
-                  <span class="caption">{{timeline.year}}</span>
-                </v-card-title>
-                <v-card-text class="white text--primary">
-                  <p>{{timeline.description}}</p>
-                </v-card-text>
-              </v-card>
-            </v-timeline-item>
-          </v-timeline>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-layout>
+  <div>
+    <header class="jumbotron text-center">
+      <div class="header-content">
+        <h1>
+          Tech research findings, reviews, stories and updates from
+          <nuxt-link to="/blog">Sopnopriyo !</nuxt-link>
+        </h1>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper">
+        <section class="recent-blog">
+          <h2 class="section_title">Recent Articles</h2>
+          <div v-if="featuredPost" class="article featured-post">
+            <div>
+              <img :src="featuredPost.coverPhotoUrl" alt />
+            </div>
+            <div>
+              <div class="cat photography">
+                <a href="#">Tech</a>
+              </div>
+              <h3 class="title">
+                <nuxt-link
+                  :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}"
+                >{{featuredPost.title}}</nuxt-link>
+              </h3>
+              <p class="description">{{ (featuredPost.body).substring(0,150) }}</p>
+              <div class="article_footer">
+                <span class="author">Shahin Alam</span>
+                <span class="read_more">
+                  <nuxt-link
+                    :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}"
+                  >Read More &#8594</nuxt-link>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="posts" class="articles">
+            <div class="article" v-for="post in posts" :key="post.title">
+              <div class="preview">
+                <div class="stretch">
+                  <a href="#">
+                    <img :src="post.coverPhotoUrl" alt="Article Image" />
+                  </a>
+                </div>
+              </div>
+              <div class="cat photography">
+                <a href="#">Tech</a>
+              </div>
+              <h3 class="title">
+                <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">{{post.title}}</nuxt-link>
+              </h3>
+              <p class="description">{{ (post.body).substring(0,150) }}</p>
+              <div class="article_footer">
+                <span class="author">Shahin Alam</span>
+                <span class="read_more">
+                  <nuxt-link
+                    :to="{ name: 'blog-slug', params: { slug: post.slug }}"
+                  >Read More &#8594</nuxt-link>
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <hr />
+        <section class="recent-portfolio">
+          <h2 class="section_title">Recent Projects</h2>
+
+          <div v-if="featuredPortfolio" class="article featured-post">
+            <div>
+              <img :src="featuredPortfolio.coverPhotoUrl" alt />
+            </div>
+            <div>
+              <div class="cat photography">
+                <a href="#">Tech</a>
+              </div>
+              <h3 class="title">
+                <nuxt-link to="/portfolio">{{featuredPortfolio.title}}</nuxt-link>
+              </h3>
+              <p class="description">{{ (featuredPortfolio.description).substring(0,150) }}</p>
+              <div class="article_footer">
+                <span class="author">Shahin Alam</span>
+                <span class="read_more">
+                  <nuxt-link to="/portfolio">Read More &#8594</nuxt-link>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="articles" v-if="portfolios">
+            <div class="article" v-for="portfolio in portfolios" :key="portfolio.title">
+              <div class="preview">
+                <div class="stretch">
+                  <a href="#">
+                    <img :src="portfolio.coverPhotoUrl" alt="Article Image" />
+                  </a>
+                </div>
+              </div>
+              <div class="cat photography">
+                <a href="#">Tech</a>
+              </div>
+              <h3 class="title">
+                <nuxt-link to="/portfolio">{{portfolio.title}}</nuxt-link>
+              </h3>
+              <p class="description">{{ (portfolio.description).substring(0,150) }}</p>
+              <footer class="article_footer">
+                <span class="author">Shahin Alam</span>
+                <span class="read_more">
+                  <nuxt-link to="/portfolio">Read More &#8594</nuxt-link>
+                </span>
+              </footer>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.home-text-body {
-  white-space: pre-wrap; /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
-  text-align: justify;
-  text-justify: inter-word;
-  font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman",
-    Times, serif;
-  letter-spacing: 0.01rem;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 18px;
-  line-height: 1.2;
-  letter-spacing: -0.003em;
+
+<style lang="scss" scoped>
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-.home-shahin-image {
-  margin-top: 40px;
-  margin-right: 40px;
+
+.section_title {
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.featured-post {
+  flex-direction: row !important;
+  padding: 0px !important;
+
+  @include sm {
+    flex-direction: column !important;
+  }
+
+  @include md {
+    flex-direction: row;
+  }
+
+  @include lg {
+    flex-direction: column;
+  }
+
+  img {
+    width: 97%;
+    height: 100%;
+
+    @include sm {
+      width: 100%;
+    }
+
+    @include md {
+      width: 97%;
+    }
+
+    @include lg {
+      width: 97%;
+    }
+  }
+}
+.articles {
+  width: 100%;
+  display: grid;
+  grid-gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  flex-wrap: wrap;
+  margin-bottom: 5rem;
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #e6e8eb;
+  margin-top: 3rem;
+  &:hover {
+    img {
+      transform: scale(1.05);
+    }
+
+    .read_more {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .author {
+      opacity: 0;
+      z-index: -1;
+    }
+  }
+
+  a {
+    color: #333;
+  }
+
+  .preview {
+    position: relative;
+    margin-bottom: 1.3rem;
+    overflow: hidden;
+    margin-top: -4rem;
+    width: 100%;
+    padding-bottom: 50%;
+    .stretch {
+      position: absolute;
+    }
+    img {
+      vertical-align: middle;
+      transition: all 0.25s ease-in-out;
+    }
+  }
+
+  .cat {
+    margin-bottom: 1rem;
+    padding: 0.4rem 0.5rem;
+    align-self: flex-start;
+    width: fit-content;
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+    transition: all 0.3s;
+  }
+
+  .photography {
+    background-color: rgba($color: #2b9eb3, $alpha: 0.8);
+    &:hover {
+      background-color: rgba($color: #2b9eb3, $alpha: 1);
+    }
+  }
+
+  .art {
+    background-color: rgba($color: #f71735, $alpha: 0.8);
+    &:hover {
+      background-color: rgba($color: #f71735, $alpha: 1);
+    }
+  }
+
+  .cat,
+  .article_footer {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .description {
+    margin-bottom: 2.5rem;
+  }
+
+  .article_footer {
+    border-top: 1px solid #e2e2e2;
+    margin-top: auto;
+    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    overflow: hidden;
+  }
+
+  .author,
+  .read_more {
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    transition: all 0.3s ease-out;
+  }
+
+  .read_more {
+    opacity: 0;
+    z-index: -1;
+    a {
+      display: block;
+    }
+    &:hover {
+      a {
+        color: #2b9eb3;
+      }
+    }
+  }
+
+  .author {
+    z-index: 1;
+  }
 }
 </style>
 <script>
+import axios from "axios";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
+
 export default {
   head: {
-    title: "Sopnopriyo - A passionate Software Engineer based in Singapore",
+    title:
+      "Sopnopriyo - Tech research findings, reviews, stories and updates from Sopnopriyo !",
     meta: [
       {
         hid: "description",
@@ -91,114 +328,46 @@ export default {
           "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
       },
       {
+        hid: "og:title",
         name: "og:title",
         content:
-          "Sopnopriyo - A passionate Software Engineer based in Singapore"
+          "Sopnopriyo - Tech research findings, reviews, stories and updates from Sopnopriyo !"
       },
       {
+        hid: "og:description",
         name: "og:description",
         content:
           "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
       },
-      { name: "og:type", content: "website" },
-      { name: "og:url", content: "https://sopnopriyo.com/" },
       {
+        hid: "og:type",
+        name: "og:type",
+        content: "website"
+      },
+      { hid: "og:url", name: "og:url", content: "https://sopnopriyo.com/" },
+      {
+        hid: "og:image",
         name: "og:image",
-        content: "https://sopnopriyo.com/img/opengraph/home/home.jpg"
+        content: "https://sopnopriyo.com/img/opengraph/home.jpg"
       }
     ]
   },
-  data: () => {
+  async asyncData(context) {
+    // fetch the post from the API
+    let blogapi = axios.get("/blogs?sort=date,desc&size=4", {
+      headers: { "Access-Control-Allow-Origin": "*" }
+    });
+
+    let portfolioApi = axios.get("/portfolios?sort=date,desc&size=4");
+
+    let [blogRes, portfolioRes] = await Promise.all([blogapi, portfolioApi]);
+
     return {
-      d1: new Date(2017, 9, 1),
-      d2: new Date(),
-      timelines: [
-        {
-          organization: "Isobar, Singapore",
-          year: "2019.06 - Present",
-          description:
-            "Delivering digital transformation, powered by creativity. Isober helps its clients to solve complex business challenges through digital marketing, ecosystems and products, driving digital strength and brand loyalty. Isobar clients include Coca-Cola, adidas, Enterprise, P&G, Philips and Huawei.",
-          color: "red lighten-1",
-          icon: "fas fa-briefcase"
-        },
-        {
-          organization: "Uilicious Pte. Ltd, Singapore",
-          year: "2018.01 - 2019.05",
-          description:
-            "Working as a Software Engineer. Since it's a start up , I'm doing everything including building Web Services and implementing responsive Web UI, testing the software and providing technical support to its clients.",
-          color: "red lighten-1",
-          icon: "fas fa-briefcase"
-        },
-        {
-          organization: "University of Malaya, Malaysia",
-          year: "2014.09 - 2018.02",
-          description:
-            "I've studied Bachelor degree in Software Engineering and passed with honours with distniction.",
-          color: "purple darken-1",
-          icon: "fas fa-graduation-cap"
-        },
-        {
-          organization: "Hilti Asia IT Services, Malaysia",
-          year: "2016.08 - 01.2017",
-          description:
-            "Worked as a Software Developer intern. I was involved in plan, design, build and test Web Services by following the standard microservice architecture",
-          color: "red lighten-2",
-          icon: "fas fa-briefcase"
-        },
-        {
-          organization: "University of Malaya, Malaysia",
-          year: "2016.02 - 2016.07",
-          description:
-            "Taught students how to implement different data structures, for example, Stack, Queue, LinkedList, Searching and Sorting Techniques , Binary Search Tree and so on.",
-          color: "indigo lighten-1",
-          icon: "fas fa-chalkboard-teacher"
-        },
-        {
-          organization: "Fusionex International, Malaysia",
-          year: "2015.07 - 2015.10",
-          description:
-            "Worked as a Software Developer intern. My responsibility was to design and develop customer facing website and reusable plugins.",
-          color: "red lighten-2",
-          icon: "fas fa-briefcase"
-        },
-        {
-          organization:
-            "Birshreshtha Munshi Abdur Rouf Public College, Bangladesh",
-          year: "2011 - 2013",
-          description:
-            "I've passed Higher Secondary School major in Science and secured GPA 5.00 out of 5.00 in the HSC public examination",
-          color: "indigo",
-          icon: "fas fa-school"
-        },
-        {
-          organization: "Gangni Pilot High School, Bangladesh",
-          year: "2009 - 2011",
-          description:
-            "I've passed Secondary School major in Science and secured GPA 5.00 out of 5.00 in the SSC public examination",
-          color: "indigo lighten-1",
-          icon: "fas fa-school"
-        }
-      ]
+      posts: blogRes.data.content.slice(1, blogRes.data.content.length),
+      featuredPost: blogRes.data.content[0],
+      portfolios: portfolioRes.data.slice(1, portfolioRes.data.length),
+      featuredPortfolio: portfolioRes.data[0]
     };
-  },
-  computed: {
-    inMonths() {
-      var d1Y = this.d1.getFullYear();
-      var d2Y = this.d2.getFullYear();
-      var d1M = this.d1.getMonth();
-      var d2M = this.d2.getMonth();
-
-      var inMonths = d2M + 12 * d2Y - (d1M + 12 * d1Y);
-
-      if (inMonths >= 12) {
-        inMonths = inMonths % 12;
-      }
-      return inMonths;
-    },
-
-    inYears() {
-      return this.d2.getFullYear() - this.d1.getFullYear();
-    }
   }
 };
 </script>

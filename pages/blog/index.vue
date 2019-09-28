@@ -1,35 +1,39 @@
 <template>
-  <v-container v-if="loading" fluid fill-height>
-    <v-layout align-center justify-center>
-      <v-progress-circular :indeterminate="loading" color="purple"></v-progress-circular>
-    </v-layout>
-  </v-container>
-  <v-container v-else class="mt-5" grid-list-md text-xs-center>
-    <v-layout row wrap align-center>
-      <v-flex xs12 sm6 md6 v-for="post in computedPosts" :key="post.title">
-        <div>
-          <v-card hover>
-            <v-img :src="post.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
-            <v-card-title class="title">{{ post.title }}</v-card-title>
-            <v-card-text>
-              <div>
-                <span style="color:grey">Created on</span>
-                <strong>{{(post.date ||'').substring(0,10)}}</strong>
-              </div>
-              <pre>
+  <div>
+    <header class="jumbotron text-center">
+      <div class="header-content">
+        <h1>Read Software Engineering Blogs</h1>
+      </div>
+    </header>
+    <v-container class="mt-5" grid-list-md text-xs-center>
+      <v-layout row wrap align-center>
+        <v-flex xs12 sm6 md6 v-for="post in computedPosts" :key="post.title">
+          <div>
+            <v-card hover>
+              <v-img :src="post.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
+              <v-card-title class="title">{{ post.title }}</v-card-title>
+              <v-card-text>
+                <div>
+                  <span style="color:grey">Created on</span>
+                  <strong>{{(post.date ||'').substring(0,10)}}</strong>
+                </div>
+                <pre>
 {{ (post.body).substring(0,150) }}
                 <nuxt-link
   :to="{ name: 'blog-slug', params: { slug: post.slug }}"
->Read More</nuxt-link>
+>Read More</nuxt-link>'
+
+<!-- <a :href="'blog/'+post.slug">Read More</a> -->
 							</pre>
-            </v-card-text>
-          </v-card>
-        </div>
-      </v-flex>
-    </v-layout>
-  </v-container>
+              </v-card-text>
+            </v-card>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss" >
 pre {
   white-space: pre-wrap; /* Since CSS 2.1 */
   white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
@@ -62,10 +66,14 @@ pre {
 
 <script>
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
+
 export default {
   head: {
-    title: "Sopnopriyo - Blog",
+    title: "Sopnopriyo - Read Software Engineering Blogs",
     meta: [
       {
         hid: "description",
@@ -73,45 +81,39 @@ export default {
         content:
           "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
       },
-      { name: "og:title", content: "Sopnopriyo Blog" },
       {
+        hid: "og:title",
+        name: "og:title",
+        content: "Sopnopriyo - Read Software Engineering Blogs"
+      },
+      {
+        hid: "og:description",
         name: "og:description",
         content:
           "Sopnopriyo helps Software Engineers by sharing real life engineering chalenges and solutions"
       },
-      { name: "og:type", content: "website" },
-      { name: "og:url", content: "https://sopnopriyo.com/blog" },
+      { hid: "og:type", name: "og:type", content: "website" },
       {
+        hid: "og:url",
+        name: "og:url",
+        content: "https://sopnopriyo.com/blog"
+      },
+      {
+        hid: "og:image",
         name: "og:image",
-        content: "https://sopnopriyo.com/img/opengraph/home/home.jpg"
+        content: "https://sopnopriyo.com/img/opengraph/home.jpg"
       }
     ]
   },
-  data: () => {
-    return {
-      posts: [],
-      loading: true
-    };
-  },
-  computed: {
-    computedPosts() {
-      return this.posts;
-    }
-  },
-  created() {
-    this.fetchPosts();
-    this.loading = false;
-  },
-  methods: {
-    fetchPosts() {
-      axios
-        .get("/blogs?sort=date,desc", {
-          headers: { "Access-Control-Allow-Origin": "*" }
-        })
-        .then(response => {
-          this.posts = response.data.content;
-        });
-    }
+  async asyncData(context) {
+    // fetch the post from the API
+    return axios
+      .get("/blogs?sort=date,desc", {
+        headers: { "Access-Control-Allow-Origin": "*" }
+      })
+      .then(res => {
+        return { computedPosts: res.data.content };
+      });
   }
 };
 </script>

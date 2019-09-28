@@ -1,63 +1,49 @@
 <template>
-  <v-container fluid grid-list-md>
-    <h1 class="mt-5 text-md-center">Contact Me</h1>
-    <v-layout align-center justify-center row wrap>
-      <v-card hover>
-        <v-container fill-height fluid>
-          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="save()">
-            <v-layout align-center justify-center row wrap>
-              <v-flex xs12 sm12 md12 v-if="alert.message != ''">
-                <v-alert
-                  :value="alert.show"
-                  :type="alert.type"
-                  :dismissible="true"
-                >{{alert.message}}</v-alert>
-              </v-flex>
-              <v-flex xs12 sm12 md6>
-                <v-text-field
-                  name="name"
-                  v-model="contact.name"
-                  solo
-                  :rules="nameRules"
-                  label="Name"
-                  required
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm12 md6>
-                <v-text-field
-                  name="email"
-                  v-model="contact.email"
-                  solo
-                  :rules="emailRules"
-                  label="E-mail"
-                  required
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm12 md12>
-                <v-textarea
-                  name="message"
-                  label="Message"
-                  solo
-                  v-model="contact.message"
-                  :rules="messageRules"
-                ></v-textarea>
-              </v-flex>
-              <v-flex xs12 sm12 md2>
-                <v-btn type="submit" primary medium block>Send</v-btn>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-container>
-      </v-card>
-    </v-layout>
-  </v-container>
+  <section class="form-box">
+    <h1>Contact Me</h1>
+    <form @submit="save()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input v-model="contact.name" class="form-control" id="name" type="text" name="Name" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input v-model="contact.email" class="form-control" id="email" type="email" name="Email" />
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea v-model="contact.message" class="form-control" id="message" name="Message"></textarea>
+      </div>
+      <input class="btn btn-primary" type="submit" value="Submit" />
+    </form>
+  </section>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
+.form-box {
+  max-width: 500px;
+  margin: auto;
+  padding: 50px;
+  background: #ffffff;
+  border: 10px solid #f2f2f2;
+}
+
+h1,
+p {
+  text-align: center;
+}
+
+input,
+textarea {
+  width: 100%;
+}
 </style>
 <script>
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_API
+    : process.env.PROD_API;
 
 export default {
   head: {
@@ -69,17 +55,27 @@ export default {
         content:
           "Need anything built, want to work together or simply want to have a chat? Drop me an e-mail at sopnopriyo@gmail.com or simply fill out the form below and I will reply to you soon!"
       },
-      { name: "og:title", content: "Sopnopriyo - let's get in touch" },
       {
+        hid: "og:title",
+        name: "og:title",
+        content: "Sopnopriyo - let's get in touch"
+      },
+      {
+        hid: "og:description",
         name: "og:description",
         content:
           "Need anything built, want to work together or simply want to have a chat? Drop me an e-mail at sopnopriyo@gmail.com or simply fill out the form below and I will reply to you soon!"
       },
-      { name: "og:type", content: "website" },
-      { name: "og:url", content: "https://sopnopriyo.com/contact" },
+      { hid: "og:type", name: "og:type", content: "website" },
       {
+        hid: "og:url",
+        name: "og:url",
+        content: "https://sopnopriyo.com/contact"
+      },
+      {
+        hid: "og:image",
         name: "og:image",
-        content: "https://sopnopriyo.com/img/opengraph/home/home.jpg"
+        content: "https://sopnopriyo.com/img/opengraph/home.jpg"
       }
     ]
   },
