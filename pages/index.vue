@@ -14,26 +14,16 @@
           <h2 class="section_title">Recent Articles</h2>
           <div v-if="featuredPost" class="article featured-post">
             <div>
-              <img :src="featuredPost.coverPhotoUrl" alt />
+              <nuxt-link :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}">
+                <img :src="featuredPost.coverPhotoUrl" alt />
+              </nuxt-link>
             </div>
             <div>
-              <div class="cat photography">
-                <a href="#">Tech</a>
-              </div>
-              <h3 class="title">
+              <h2 class="title">
                 <nuxt-link
                   :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}"
                 >{{featuredPost.title}}</nuxt-link>
-              </h3>
-              <p class="description">{{ (featuredPost.body).substring(0,150) }}</p>
-              <div class="article_footer">
-                <span class="author">Shahin Alam</span>
-                <span class="read_more">
-                  <nuxt-link
-                    :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}"
-                  >Read More &#8594</nuxt-link>
-                </span>
-              </div>
+              </h2>
             </div>
           </div>
 
@@ -41,26 +31,14 @@
             <div class="article" v-for="post in posts" :key="post.title">
               <div class="preview">
                 <div class="stretch">
-                  <a href="#">
-                    <img :src="post.coverPhotoUrl" alt="Article Image" />
-                  </a>
+                  <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">
+                    <img :src="post.coverPhotoUrl" :alt="post.title" />
+                  </nuxt-link>
                 </div>
               </div>
-              <div class="cat photography">
-                <a href="#">Tech</a>
-              </div>
-              <h3 class="title">
+              <h2 class="title">
                 <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">{{post.title}}</nuxt-link>
-              </h3>
-              <p class="description">{{ (post.body).substring(0,150) }}</p>
-              <div class="article_footer">
-                <span class="author">Shahin Alam</span>
-                <span class="read_more">
-                  <nuxt-link
-                    :to="{ name: 'blog-slug', params: { slug: post.slug }}"
-                  >Read More &#8594</nuxt-link>
-                </span>
-              </div>
+              </h2>
             </div>
           </div>
         </section>
@@ -73,19 +51,9 @@
               <img :src="featuredPortfolio.coverPhotoUrl" alt />
             </div>
             <div>
-              <div class="cat photography">
-                <a href="#">Tech</a>
-              </div>
-              <h3 class="title">
+              <h2 class="title">
                 <nuxt-link to="/portfolio">{{featuredPortfolio.title}}</nuxt-link>
-              </h3>
-              <p class="description">{{ (featuredPortfolio.description).substring(0,150) }}</p>
-              <div class="article_footer">
-                <span class="author">Shahin Alam</span>
-                <span class="read_more">
-                  <nuxt-link to="/portfolio">Read More &#8594</nuxt-link>
-                </span>
-              </div>
+              </h2>
             </div>
           </div>
 
@@ -93,24 +61,15 @@
             <div class="article" v-for="portfolio in portfolios" :key="portfolio.title">
               <div class="preview">
                 <div class="stretch">
-                  <a href="#">
+                  <nuxt-link to="/portfolio">
                     <img :src="portfolio.coverPhotoUrl" alt="Article Image" />
-                  </a>
+                  </nuxt-link>
                 </div>
               </div>
-              <div class="cat photography">
-                <a href="#">Tech</a>
-              </div>
-              <h3 class="title">
-                <nuxt-link to="/portfolio">{{portfolio.title}}</nuxt-link>
-              </h3>
-              <p class="description">{{ (portfolio.description).substring(0,150) }}</p>
-              <footer class="article_footer">
-                <span class="author">Shahin Alam</span>
-                <span class="read_more">
-                  <nuxt-link to="/portfolio">Read More &#8594</nuxt-link>
-                </span>
-              </footer>
+
+              <nuxt-link to="/portfolio">
+                <h2 class="title">{{portfolio.title}}</h2>
+              </nuxt-link>
             </div>
           </div>
         </section>
@@ -240,26 +199,6 @@ img {
     transition: all 0.3s;
   }
 
-  .photography {
-    background-color: rgba($color: #2b9eb3, $alpha: 0.8);
-    &:hover {
-      background-color: rgba($color: #2b9eb3, $alpha: 1);
-    }
-  }
-
-  .art {
-    background-color: rgba($color: #f71735, $alpha: 0.8);
-    &:hover {
-      background-color: rgba($color: #f71735, $alpha: 1);
-    }
-  }
-
-  .cat,
-  .article_footer {
-    font-family: Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
-  }
-
   .title {
     font-size: 2rem;
     margin-bottom: 1.5rem;
@@ -268,53 +207,10 @@ img {
       text-decoration: none;
     }
   }
-
-  .description {
-    margin-bottom: 2.5rem;
-  }
-
-  .article_footer {
-    border-top: 1px solid #e2e2e2;
-    margin-top: auto;
-    padding-top: 2rem;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    overflow: hidden;
-  }
-
-  .author,
-  .read_more {
-    display: block;
-    grid-column: 1;
-    grid-row: 1;
-    transition: all 0.3s ease-out;
-  }
-
-  .read_more {
-    opacity: 0;
-    z-index: -1;
-    a {
-      display: block;
-    }
-    &:hover {
-      a {
-        color: #2b9eb3;
-      }
-    }
-  }
-
-  .author {
-    z-index: 1;
-  }
 }
 </style>
 <script>
 import axios from "axios";
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DEV_API
-    : process.env.PROD_API;
 
 export default {
   head: {

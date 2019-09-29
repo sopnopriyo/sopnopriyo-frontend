@@ -11,7 +11,10 @@
           <div>
             <v-card hover>
               <v-img :src="portfolio.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
-              <v-card-title class="title">{{ portfolio.title }}</v-card-title>
+              <v-card-title class="title"></v-card-title>
+              <a :href="portfolio.url">
+                <h2>{{ portfolio.title }}</h2>
+              </a>
               <v-card-text>
                 <pre>
 {{portfolio.description}}

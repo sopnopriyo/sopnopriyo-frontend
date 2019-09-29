@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app clipped class="red" dense>
+    <v-navigation-drawer v-model="drawer" app clipped dense>
       <v-list dense>
         <v-list-item v-for="item in computedItems  " :key="item.text" :to="item.path">
           <v-list-item-action>
@@ -39,18 +39,18 @@ export default {
     drawer: true,
     menuItems: [
       {
-        icon: "fas fa-tachometer-alt",
+        icon: "fa fa-dashboard",
         path: "/admin/dashboard",
         text: "Dashboard"
       },
-      { icon: "fab fa-blogger", path: "/admin/blog", text: "Blog" }
+      { icon: "fa fa-book", path: "/admin/blog", text: "Blog" }
     ],
     adminMenus: [
-      { icon: "fas fa-user", path: "/admin/user", text: "Users" },
-      { icon: "fas fa-archive", path: "/admin/portfolio", text: "Portfolio" },
-      { icon: "fas fa-envelope", path: "/admin/contact", text: "Message" },
+      { icon: "fa fa-user", path: "/admin/user", text: "Users" },
+      { icon: "fa fa-archive", path: "/admin/portfolio", text: "Portfolio" },
+      { icon: "fa fa-envelope", path: "/admin/contact", text: "Message" },
       {
-        icon: "far fa-laptop-code",
+        icon: "fa fa-laptop",
         path: "admin/apidefination",
         text: "API Specification"
       }

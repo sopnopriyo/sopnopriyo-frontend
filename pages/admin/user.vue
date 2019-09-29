@@ -1,76 +1,68 @@
 <template>
   <div>
-    <v-toolbar flat color="light">
-      <v-toolbar-title>Users</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-btn slot="activator" color="primary" dark class="mb-2">New User</v-btn>
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="userList"
+      class="elevation-1"
+      :page.sync="pagination.page"
+      :items-per-page="pagination.rowsPerPage"
+    >
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>Users</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <div class="flex-grow-1"></div>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark class="mb-2" v-on="on">New User</v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
 
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field v-model="editedItem.login" solo label="Username"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field v-model="editedItem.email" solo label="Email"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field v-model="editedItem.firstName" solo label="First Name"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-text-field v-model="editedItem.lastName" solo label="Last Name"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-combobox
-                    v-model="editedItem.authorities"
-                    :items="roles"
-                    label="Roles"
-                    multiple
-                    solo
-                  ></v-combobox>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.login" label="Username"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.email" label="First Name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.email" label="Last Name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-select
+                        :items="roles"
+                        v-model="editedItem.authorities"
+                        label="Role"
+                        outlined
+                        multiple
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-toolbar>
-    <v-data-table :headers="headers" :items="userList" class="elevation-1">
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.login }}</td>
-        <td class="text-xs-right">{{ props.item.email }}</td>
-        <td class="text-xs-right">{{ props.item.firstName }}</td>
-        <td class="text-xs-right">{{ props.item.lastName }}</td>
-        <td class="text-xs-right">
-          <v-flex no-wrap xs5 sm3>
-            <v-chip
-              v-for="role in props.item.authorities"
-              :key="role"
-              color="blue lighten-4"
-              class="ml-0"
-              label
-              small
-            >{{role}}</v-chip>
-          </v-flex>
-        </td>
-        <td class="justify-center layout px-0">
-          <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-          <v-icon small @click="deleteItem(props.item)">delete</v-icon>
-        </td>
+              <v-card-actions>
+                <div class="flex-grow-1"></div>
+                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
       </template>
-      <template slot="no-data">
+      <template v-slot:item.action="{ item }">
+        <v-btn small class="mr-2" @click="editItem(item)">edit</v-btn>
+        <v-btn small @click="deleteItem(item)">delete</v-btn>
+      </template>
+      <template v-slot:no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>

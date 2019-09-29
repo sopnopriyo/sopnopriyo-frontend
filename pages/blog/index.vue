@@ -5,63 +5,26 @@
         <h1>Read Software Engineering Blogs</h1>
       </div>
     </header>
-    <v-container class="mt-5" grid-list-md text-xs-center>
-      <v-layout row wrap align-center>
-        <v-flex xs12 sm6 md6 v-for="post in computedPosts" :key="post.title">
-          <div>
-            <v-card hover>
-              <v-img :src="post.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
-              <v-card-title class="title">{{ post.title }}</v-card-title>
-              <v-card-text>
-                <div>
-                  <span style="color:grey">Created on</span>
-                  <strong>{{(post.date ||'').substring(0,10)}}</strong>
-                </div>
-                <pre>
-{{ (post.body).substring(0,150) }}
-                <nuxt-link
-  :to="{ name: 'blog-slug', params: { slug: post.slug }}"
->Read More</nuxt-link>'
+    <main class="container">
+      <div class="row">
+        <div class="col-sm-6" v-for="post in computedPosts" :key="post.title">
+          <div class="card">
+            <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">
+              <img class="card-img-top" :src="post.coverPhotoUrl" :alt="post.title" />
+            </nuxt-link>
 
-<!-- <a :href="'blog/'+post.slug">Read More</a> -->
-							</pre>
-              </v-card-text>
-            </v-card>
+            <div class="card-body">
+              <h2 class="title">
+                <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">{{post.title}}</nuxt-link>
+              </h2>
+            </div>
           </div>
-        </v-flex>
-      </v-layout>
-    </v-container>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 <style lang="scss" >
-pre {
-  white-space: pre-wrap; /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
-  text-align: justify;
-  text-justify: inter-word;
-  font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman",
-    Times, serif;
-  letter-spacing: 0.01rem;
-  // font-weight: 400;
-  // font-style: normal;
-  font-size: 18px;
-  // line-height: 1.58;
-  // letter-spacing: -.003em;
-}
-
-.title-text {
-  position: absolute;
-  bottom: 0;
-  background: rgb(0, 0, 0); /* Fallback color */
-  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
-  color: #f1f1f1;
-  width: 100%;
-  border-radius: 3px;
-  padding: 3px;
-}
 </style>
 
 <script>

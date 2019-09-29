@@ -126,7 +126,7 @@ export default {
       return this.editedIndex === -1 ? "New Portfolio" : "Edit Portfolio";
     },
     computedMessages() {
-      return this.$store.state.message.messageList || [];
+      return this.$store.state.message.messageListResponse || [];
     },
     token() {
       return this.$store.state.auth.auth;

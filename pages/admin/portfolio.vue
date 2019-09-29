@@ -1,109 +1,86 @@
 <template>
   <div>
-    <v-toolbar flat color="light">
-      <v-toolbar-title>Portfolios</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="700px">
-        <v-btn slot="activator" color="primary" dark class="mb-2">New Portfolio</v-btn>
-        <v-card>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                      v-model="editedItem.title"
-                      solo
-                      :rules="formRules.title.rules"
-                      label="Title"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-textarea
-                      solo
-                      name="input-7-4"
-                      :rules="formRules.description.rules"
-                      label="Description"
-                      v-model="editedItem.description"
-                    ></v-textarea>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                      name="input-7-4"
-                      solo
-                      :rules="formRules.url.rules"
-                      label="URL"
-                      v-model="editedItem.url"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 lg6>
-                    <v-menu
-                      ref="menu1"
-                      :close-on-content-click="false"
-                      v-model="menu1"
-                      :nudge-right="40"
-                      lazy
-                      transition="scale-transition"
-                      offset-y
-                      full-width
-                      max-width="290px"
-                      min-width="290px"
-                    >
-                      <v-text-field
-                        slot="activator"
-                        solo
-                        v-model="editedItem.date"
-                        :rules="formRules.date.rules"
-                        label="Date"
-                        hint="YYYY/MM/DD format"
-                        persistent-hint
-                        @blur="date = parseDate(editedItem.date)"
-                      ></v-text-field>
-                      <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                    </v-menu>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                      v-model="editedItem.coverPhotoUrl"
-                      solo
-                      :rules="formRules.coverPhotoUrl.rules"
-                      label="Cover Photo URL"
-                    ></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" :disabled="!valid" flat @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-dialog>
-    </v-toolbar>
     <v-data-table
       :headers="headers"
       :items="computedPortfolios"
-      :loading="loading"
+      :server-items-length="to"
       class="elevation-1"
+      :page.sync="pagination.page"
+      :items-per-page="pagination.rowsPerPage"
     >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.title }}</td>
-        <td>{{(props.item.description || '').substring(0, 50) + '…'}}</td>
-        <td>{{ props.item.url }}</td>
-        <td>{{ props.item.date }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-          <v-icon small @click="deleteItem(props.item)">delete</v-icon>
-        </td>
+      <template v-slot:top>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>Portfolio</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <div class="flex-grow-1"></div>
+          <v-dialog v-model="dialog" max-width="500px">
+            <template v-slot:activator="{ on }">
+              <v-btn color="primary" dark class="mb-2" v-on="on">New Post</v-btn>
+            </template>
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.url" label="URL"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-textarea outlined v-model="editedItem.description" label="Description"></v-textarea>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-menu
+                        ref="menu1"
+                        v-model="menu1"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        lazy
+                        full-width
+                        max-width="290px"
+                        min-width="290px"
+                      >
+                        <template v-slot:activator="{ on }">
+                          <v-text-field
+                            v-model="editedItem.date"
+                            label="Date"
+                            hint="YYYY/MM/DD format"
+                            persistent-hint
+                            :set="date = parseDate(editedItem.date)"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                      </v-menu>
+                    </v-col>
+
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.coverPhotoUrl" label="Cover Photo URL"></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <div class="flex-grow-1"></div>
+                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
       </template>
-      <template slot="no-data">
+      <template v-slot:item.action="{ item }">
+        <v-btn small class="mr-2" @click="editItem(item)">edit</v-btn>
+        <v-btn small @click="deleteItem(item)">delete</v-btn>
+      </template>
+      <template v-slot:no-data>
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
@@ -123,14 +100,8 @@ export default {
       {
         text: "Title",
         align: "left",
-        sortable: false,
+        sortable: true,
         value: "title"
-      },
-      {
-        text: "Description",
-        align: "left",
-        sortable: false,
-        value: "description"
       },
       {
         text: "URL",
@@ -146,6 +117,7 @@ export default {
       },
       {
         text: "Action",
+        value: "action",
         align: "center",
         sortable: false
       }
@@ -252,7 +224,7 @@ export default {
     deleteItem(item) {
       if (confirm("Are you sure you want to delete this portfolio?")) {
         return axios
-          .delete("/api/portfolios/" + item.id)
+          .delete("portfolios/" + item.id)
           .then(response => {
             this.initialize();
           })
@@ -271,28 +243,26 @@ export default {
     },
 
     save() {
-      if (this.$refs.form.validate()) {
-        let savePromise;
-        if (this.editedIndex > -1) {
-          savePromise = axios.put("/api/portfolios", this.editedItem);
-        } else {
-          savePromise = axios.post("/api/portfolios", {
-            title: this.editedItem.title,
-            description: this.editedItem.description,
-            url: this.editedItem.url,
-            date: this.editedItem.date,
-            coverPhotoUrl: this.editedItem.coverPhotoUrl
-          });
-        }
-        return savePromise
-          .then(response => {
-            this.initialize();
-            this.close();
-          })
-          .catch(error => {
-            this.close();
-          });
+      let savePromise;
+      if (this.editedIndex > -1) {
+        savePromise = axios.put("/portfolios", this.editedItem);
+      } else {
+        savePromise = axios.post("/portfolios", {
+          title: this.editedItem.title,
+          description: this.editedItem.description,
+          url: this.editedItem.url,
+          date: this.editedItem.date,
+          coverPhotoUrl: this.editedItem.coverPhotoUrl
+        });
       }
+      return savePromise
+        .then(response => {
+          this.initialize();
+          this.close();
+        })
+        .catch(error => {
+          this.close();
+        });
     },
     formatDate(date) {
       if (!date) return null;

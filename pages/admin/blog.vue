@@ -129,7 +129,7 @@ export default {
       {
         text: "Status",
         align: "left",
-        sortable: false,
+        sortable: true,
         value: "status"
       },
       {
