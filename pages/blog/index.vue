@@ -28,12 +28,6 @@
 </style>
 
 <script>
-import axios from "axios";
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DEV_API
-    : process.env.PROD_API;
-
 export default {
   head: {
     title: "Sopnopriyo - Read Software Engineering Blogs",
@@ -70,12 +64,12 @@ export default {
   },
   async asyncData(context) {
     // fetch the post from the API
-    return axios
-      .get("/blogs?sort=date,desc", {
+    return context.app.$axios
+      .$get("/api/blogs?sort=date,desc", {
         headers: { "Access-Control-Allow-Origin": "*" }
       })
       .then(res => {
-        return { computedPosts: res.data.content };
+        return { computedPosts: res.content };
       });
   }
 };

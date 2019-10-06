@@ -1,25 +1,88 @@
 <template>
-  <v-container class="mt-5">
-    <v-layout row wrap align-center>
-      <v-flex>
-        <div>
-          <v-card hover>
-            <v-img :src="post.coverPhotoUrl" class="grey darken-4"></v-img>
-            <v-card-title class="title">{{ post.title }}</v-card-title>
-            <v-card-text>
-              <div>
-                <span style="color:grey">Created on</span>
-                <strong>{{(post.date ||'').substring(0,10)}}</strong>
-              </div>
-              <pre>
-	{{ post.body }}
-								</pre>
-            </v-card-text>
-          </v-card>
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+        <!-- Title -->
+        <h1 class="mt-4">Post Title</h1>
+
+        <!-- Author -->
+        <p class="lead">
+          by
+          <a href="#">Start Bootstrap</a>
+        </p>
+
+        <hr />
+
+        <!-- Date/Time -->
+        <p>Posted on January 1, 2019 at 12:00 PM</p>
+
+        <hr />
+
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt />
+
+        <hr />
+
+        <!-- Post Content -->
+        <div v-html="$md.render(post.body)" label="Markdown Preview"></div>
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-md-4">
+        <!-- Search Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Search</h5>
+          <div class="card-body">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for..." />
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
         </div>
-      </v-flex>
-    </v-layout>
-  </v-container>
+
+        <!-- Categories Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Categories</h5>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <ul class="list-unstyled mb-0">
+                  <li>
+                    <a href="#">Web Design</a>
+                  </li>
+                  <li>
+                    <a href="#">HTML</a>
+                  </li>
+                  <li>
+                    <a href="#">Freebies</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul class="list-unstyled mb-0">
+                  <li>
+                    <a href="#">JavaScript</a>
+                  </li>
+                  <li>
+                    <a href="#">CSS</a>
+                  </li>
+                  <li>
+                    <a href="#">Tutorials</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container -->
 </template>
 <style lang="scss" scoped>
 pre {
@@ -60,12 +123,6 @@ pre {
 }
 </style>
 <script>
-import axios from "axios";
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DEV_API
-    : process.env.PROD_API;
-
 export default {
   head() {
     return {
@@ -103,9 +160,11 @@ export default {
   },
   async asyncData(context) {
     // fetch the post from the API
-    return axios.get(`/blogs/${context.params.slug}`).then(res => {
-      return { post: res.data };
-    });
+    return context.app.$axios
+      .$get(`/api/blogs/${context.params.slug}`)
+      .then(res => {
+        return { post: res };
+      });
   }
 };
 </script>

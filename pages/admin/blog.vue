@@ -13,7 +13,7 @@
           <v-toolbar-title>Blog</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <div class="flex-grow-1"></div>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="100vw">
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark class="mb-2" v-on="on">New Post</v-btn>
             </template>
@@ -35,9 +35,13 @@
                         label="Slug"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="12" md="12">
-                      <v-textarea outlined v-model="editedItem.body" label="Body"></v-textarea>
+                    <v-col cols="6" sm="6" md="6">
+                      <v-textarea outlined v-model="editedItem.body" height="100vh" label="Body"></v-textarea>
                     </v-col>
+                    <v-col cols="6" sm="6" md="6">
+                      <div v-html="$md.render(editedItem.body)" label="Markdown Preview"></div>
+                    </v-col>
+
                     <v-col cols="12" sm="12" md="12">
                       <v-menu
                         ref="menu1"
@@ -77,6 +81,14 @@
                     <v-col cols="12" sm="12" md="12">
                       <v-text-field v-model="editedItem.coverPhotoUrl" label="Cover Photo URL"></v-text-field>
                     </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-select
+                        :items="categories"
+                        v-model="editItem.category"
+                        label="category"
+                        outlined
+                      ></v-select>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -108,10 +120,6 @@
 </style>
 <script>
 import axios from "axios";
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DEV_API
-    : process.env.PROD_API;
 
 export default {
   layout: "admin-panel",
@@ -157,6 +165,7 @@ export default {
       body: "",
       status: "DRAFT",
       slug: "",
+      category: "",
       date: new Date().toISOString(),
       coverPhotoUrl: ""
     },
@@ -165,6 +174,7 @@ export default {
       body: "",
       status: "DRAFT",
       slug: "",
+      category: "",
       date: new Date().toISOString(),
       coverPhotoUrl: ""
     },
@@ -187,7 +197,17 @@ export default {
       coverPhotoUrl: {
         rules: [v => !!v || "Cover Photo Url is required"]
       }
-    }
+    },
+    categories: [
+      "Frontend",
+      "Backend",
+      "Architecture",
+      "General",
+      "Career",
+      "Project Management",
+      "Lifestyle",
+      "Mobile"
+    ]
   }),
 
   computed: {

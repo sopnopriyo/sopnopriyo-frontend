@@ -3,7 +3,6 @@
     <v-data-table
       :headers="headers"
       :items="computedPortfolios"
-      :server-items-length="to"
       class="elevation-1"
       :page.sync="pagination.page"
       :items-per-page="pagination.rowsPerPage"
@@ -169,7 +168,7 @@ export default {
       return this.editedIndex === -1 ? "New Portfolio" : "Edit Portfolio";
     },
     computedPortfolios() {
-      return this.$store.state.portfolio.portfolioListResponse || [];
+      return this.$store.state.portfolio.portfolioListResponse.content || [];
     },
     token() {
       return this.$store.state.auth.auth;

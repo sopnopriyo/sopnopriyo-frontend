@@ -5,26 +5,26 @@
         <h1>Learn more about my projects and research works</h1>
       </div>
     </header>
-    <v-container class="mt-5" grid-list-md text-xs-center>
-      <v-layout row wrap align-center>
-        <v-flex xs12 sm6 md4 v-for="portfolio in computedPortfolios" :key="portfolio.title">
-          <div>
-            <v-card hover>
-              <v-img :src="portfolio.coverPhotoUrl" height="250" class="grey darken-4"></v-img>
-              <v-card-title class="title"></v-card-title>
-              <a :href="portfolio.url">
-                <h2>{{ portfolio.title }}</h2>
-              </a>
-              <v-card-text>
-                <pre>
-{{portfolio.description}}
-							</pre>
-              </v-card-text>
-            </v-card>
+    <article>
+      <div class="container">
+        <div class="row">
+          <div
+            class="col-md-4 col-xs-12 card"
+            v-for="portfolio in computedPortfolios"
+            :key="portfolio.title"
+          >
+            <img class="card-img-top img-fluid" :src="portfolio.coverPhotoUrl" alt="Card image cap" />
+            <div class="card-block">
+              <h4 class="card-title">{{ portfolio.title }}</h4>
+              <p class="card-text">{{portfolio.description}}</p>
+              <p class="card-text">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </p>
+            </div>
           </div>
-        </v-flex>
-      </v-layout>
-    </v-container>
+        </div>
+      </div>
+    </article>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -59,13 +59,6 @@ pre {
 </style>
 
 <script>
-import axios from "axios";
-
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DEV_API
-    : process.env.PROD_API;
-
 export default {
   head: {
     title: "Sopnopriyo - Software Engineering Portfolio",
@@ -102,9 +95,11 @@ export default {
   },
   async asyncData(context) {
     // fetch the post from the API
-    return axios.get("/portfolios?sort=date,desc").then(res => {
-      return { computedPortfolios: res.data };
-    });
+    return context.app.$axios
+      .$get("/api/portfolios?sort=date,desc")
+      .then(res => {
+        return { computedPortfolios: res.content };
+      });
   }
 };
 </script>

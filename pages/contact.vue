@@ -40,11 +40,6 @@ textarea {
 <script>
 import axios from "axios";
 
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DEV_API
-    : process.env.PROD_API;
-
 export default {
   head: {
     title: "Sopnopriyo - let's get in touch",

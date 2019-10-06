@@ -9,7 +9,100 @@
       </div>
     </header>
     <main>
-      <div class="wrapper">
+      <!-- Page Content -->
+      <div class="container">
+        <div class="row">
+          <!-- Blog Entries Column -->
+          <div class="col-md-8">
+            <!-- Blog Post -->
+            <div class="card mb-4" v-for="post in posts" :key="post.id">
+              <img class="card-img-top" :src="post.coverPhotoUrl" alt="Card image cap" />
+              <div class="card-body">
+                <h2 class="card-title">{{post.title}}</h2>
+                <p class="card-text" v-html="$md.render(post.body)" label="Markdown Preview"></p>
+                <nuxt-link
+                  class="btn btn-primary"
+                  :to="{ name: 'blog-slug', params: { slug: post.slug }}"
+                >Read More &rarr;</nuxt-link>
+              </div>
+              <div class="card-footer text-muted">Posted on {{post.date}}</div>
+            </div>
+
+            <!-- Pagination -->
+            <!-- <ul class="pagination justify-content-center mb-4">
+              <li class="page-item">
+                <a class="page-link" href="#">&larr; Older</a>
+              </li>
+              <li class="page-item disabled">
+                <a class="page-link" href="#">Newer &rarr;</a>
+              </li>
+            </ul>-->
+          </div>
+
+          <!-- Sidebar Widgets Column -->
+          <div class="col-md-4">
+            <!-- Search Widget -->
+            <div class="card my-4">
+              <h5 class="card-header">Search</h5>
+              <div class="card-body">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search for..." />
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button">Go!</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+              <h5 class="card-header">Categories</h5>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <ul class="list-unstyled mb-0">
+                      <li>
+                        <a href="#">Web Design</a>
+                      </li>
+                      <li>
+                        <a href="#">HTML</a>
+                      </li>
+                      <li>
+                        <a href="#">Freebies</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-lg-6">
+                    <ul class="list-unstyled mb-0">
+                      <li>
+                        <a href="#">JavaScript</a>
+                      </li>
+                      <li>
+                        <a href="#">CSS</a>
+                      </li>
+                      <li>
+                        <a href="#">Tutorials</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Side Widget -->
+            <div class="card my-4">
+              <h5 class="card-header">Side Widget</h5>
+              <div
+                class="card-body"
+              >You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!</div>
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container -->
+
+      <!-- <div class="wrapper">
         <section class="recent-blog">
           <h2 class="section_title">Recent Articles</h2>
           <div v-if="featuredPost" class="article featured-post">
@@ -42,38 +135,7 @@
             </div>
           </div>
         </section>
-        <hr />
-        <section class="recent-portfolio">
-          <h2 class="section_title">Recent Projects</h2>
-
-          <div v-if="featuredPortfolio" class="article featured-post">
-            <div>
-              <img :src="featuredPortfolio.coverPhotoUrl" alt />
-            </div>
-            <div>
-              <h2 class="title">
-                <nuxt-link to="/portfolio">{{featuredPortfolio.title}}</nuxt-link>
-              </h2>
-            </div>
-          </div>
-
-          <div class="articles" v-if="portfolios">
-            <div class="article" v-for="portfolio in portfolios" :key="portfolio.title">
-              <div class="preview">
-                <div class="stretch">
-                  <nuxt-link to="/portfolio">
-                    <img :src="portfolio.coverPhotoUrl" alt="Article Image" />
-                  </nuxt-link>
-                </div>
-              </div>
-
-              <nuxt-link to="/portfolio">
-                <h2 class="title">{{portfolio.title}}</h2>
-              </nuxt-link>
-            </div>
-          </div>
-        </section>
-      </div>
+      </div>-->
     </main>
   </div>
 </template>
@@ -210,7 +272,7 @@ img {
 }
 </style>
 <script>
-import axios from "axios";
+//import axios from "axios";
 
 export default {
   head: {
@@ -250,20 +312,16 @@ export default {
   },
   async asyncData(context) {
     // fetch the post from the API
-    let blogapi = axios.get("/blogs?sort=date,desc&size=4", {
-      headers: { "Access-Control-Allow-Origin": "*" }
-    });
-
-    let portfolioApi = axios.get("/portfolios?sort=date,desc&size=4");
-
-    let [blogRes, portfolioRes] = await Promise.all([blogapi, portfolioApi]);
-
-    return {
-      posts: blogRes.data.content.slice(1, blogRes.data.content.length),
-      featuredPost: blogRes.data.content[0],
-      portfolios: portfolioRes.data.slice(1, portfolioRes.data.length),
-      featuredPortfolio: portfolioRes.data[0]
-    };
+    let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=4");
+    return blogapi
+      .then(response => {
+        return {
+          posts: response.content
+        };
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 </script>

@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+const development = process.env.NODE_ENV !== 'production'
 
 export default {
   mode: 'universal',
@@ -103,17 +104,18 @@ name: "og:image",
     '@nuxtjs/proxy',
     '@nuxtjs/auth',
     '@nuxtjs/style-resources',
+    '@nuxtjs/markdownit'
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseUrl: "http://sopnopriyo.com",
+    //baseUrl: development ? 'http://localhost:3000' : 'https://www.sopnopriyo.com',
     proxy: true // Can be also an object with default options
   },
   proxy: {
-    '/api/': 'https://sopnopriyo.com/',
+    '/api/': 'https://sopnopriyo.com',
   },
   /*
   ** vuetify module configuration
@@ -135,6 +137,18 @@ name: "og:image",
         }
       }
     }
+  },
+    // [optional] markdownit options
+  // See https://github.com/markdown-it/markdown-it
+  markdownit: {
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    injected: true,
+    use: [
+      'markdown-it-div',
+      'markdown-it-attrs'
+    ]
   },
   /*
   ** Build configuration
