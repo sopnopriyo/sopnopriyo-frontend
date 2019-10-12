@@ -310,6 +310,7 @@ export default {
           slug: this.editedItem.slug,
           body: this.editedItem.body,
           status: this.editedItem.status,
+          category: this.editedItem.category,
           date: this.editedItem.date,
           coverPhotoUrl: this.editedItem.coverPhotoUrl
         });

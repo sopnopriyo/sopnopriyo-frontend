@@ -14,6 +14,16 @@
 
       <div class="collapse navbar-collapse" v-bind:class="{ 'show': isMenuOpen}" id="navb">
         <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" @click="toggleBlogDropDown()" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Blog
+            </a>
+            <div class="dropdown-menu" :class="{'show' : isBlogDropdownExpanded}" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Tech</a>
+              <a class="dropdown-item" href="#">Career</a>
+              <a class="dropdown-item" href="#">Reviews</a>
+            </div>
+          </li>
           <li class="nav-item" v-for="item in items" :key="item.path">
             <nuxt-link class="nav-link" :to="item.path">{{item.text}}</nuxt-link>
           </li>
@@ -96,8 +106,11 @@ export default {
   data: () => ({
     items: [
       {
-        path: "/blog",
-        text: "Blog"
+        path: "/blog-category",
+        text: "Blog",
+        children: [
+          
+        ]
       },
       {
         path: "/portfolio",
@@ -138,7 +151,8 @@ export default {
         link: "https://stackoverflow.com/users/4778904/shahin-alam"
       }
     ],
-    isMenuOpen: false
+    isMenuOpen: false,
+    isBlogDropdownExpanded: false,
   }),
   computed: {
     loggedIn() {
@@ -152,8 +166,9 @@ export default {
     },
     toggleNavMenu() {
       this.isMenuOpen = !this.isMenuOpen;
-
-      console.log(this.isMenuOpen);
+    },
+    toggleBlogDropDown() {
+      this.isBlogDropdownExpanded = !this.isBlogDropdownExpanded;
     }
   }
 };

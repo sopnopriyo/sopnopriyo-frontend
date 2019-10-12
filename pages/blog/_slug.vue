@@ -5,23 +5,23 @@
       <!-- Post Content Column -->
       <div class="col-lg-8">
         <!-- Title -->
-        <h1 class="mt-4">Post Title</h1>
+        <h1 class="mt-4">{{post.title}}</h1>
 
         <!-- Author -->
         <p class="lead">
           by
-          <a href="#">Start Bootstrap</a>
+          <a href="#">Sopnopriyo</a>
         </p>
 
         <hr />
 
         <!-- Date/Time -->
-        <p>Posted on January 1, 2019 at 12:00 PM</p>
+        <p>Posted on {{post.date}}</p>
 
         <hr />
 
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt />
+        <img class="img-fluid rounded" :src="post.coverPhotoUrl" alt />
 
         <hr />
 
