@@ -84,7 +84,7 @@
                     <v-col cols="12" sm="12" md="12">
                       <v-select
                         :items="categories"
-                        v-model="editItem.category"
+                        v-model="editedItem.category"
                         label="category"
                         outlined
                       ></v-select>
