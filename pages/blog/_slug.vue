@@ -96,13 +96,13 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: this.post.body
+          content: this.post.excerpt
         },
         { hid: "og:title", name: "og:title", content: this.post.title },
         {
           hid: "og:description",
           name: "og:description",
-          content: this.post.body
+          content: this.post.excerpt
         },
         { hid: "og:type", name: "og:type", content: "website" },
         {
