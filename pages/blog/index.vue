@@ -227,8 +227,14 @@ export default {
     let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=100");
     return blogapi
       .then(response => {
+        let content = response.content;
+
+        for (var i = 0; i < content.length; i++) {
+            const date = new Date(content[i].date);
+            content[i].date = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate() +", "+ date.getFullYear();
+        }
         return {
-          posts: response.content
+          posts: content
         };
       })
       .catch(error => {

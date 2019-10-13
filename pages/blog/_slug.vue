@@ -128,6 +128,8 @@ export default {
     return context.app.$axios
       .$get(`/api/blogs/${context.params.slug}`)
       .then(res => {
+         const date = new Date(res.date);
+         res.date = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate() +", "+ date.getFullYear();
         return { post: res };
       });
   }

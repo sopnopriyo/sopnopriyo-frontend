@@ -36,13 +36,13 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="6">
-                      <v-textarea outlined v-model="editedItem.body" height="50vh" label="Body"></v-textarea>
+                      <v-textarea outlined v-model="editedItem.body" auto-grow="true" label="Body"></v-textarea>
                     </v-col>
                     <v-col cols="6" sm="6" md="6">
                       <div v-html="$md.render(editedItem.body)" label="Body Preview"></div>
                     </v-col>
                     <v-col cols="6" sm="6" md="6">
-                      <v-textarea outlined v-model="editedItem.excerpt" height="50vh" label="Excerpt"></v-textarea>
+                      <v-textarea outlined v-model="editedItem.excerpt" auto-grow="true" label="Excerpt"></v-textarea>
                     </v-col>
                     <v-col cols="6" sm="6" md="6">
                       <div v-html="$md.render(editedItem.excerpt)" label="Excerpt Preview"></div>

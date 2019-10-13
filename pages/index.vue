@@ -78,16 +78,16 @@
                 </div>
               </div>
             </div> -->
-            <CategoryWidget>
-            </CategoryWidget>
+            <!-- <CategoryWidget>
+            </CategoryWidget> -->
 
             <!-- Side Widget -->
-            <div class="card my-4">
+            <!-- <div class="card my-4">
               <h5 class="card-header">Side Widget</h5>
               <div
                 class="card-body"
               >You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- /.row -->
@@ -270,9 +270,15 @@ export default {
     // fetch the post from the API
     let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=4");
     return blogapi
-      .then(response => {
+     .then(response => {
+        let content = response.content;
+
+        for (var i = 0; i < content.length; i++) {
+            const date = new Date(content[i].date);
+            content[i].date = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate() +", "+ date.getFullYear();
+        }
         return {
-          posts: response.content
+          posts: content
         };
       })
       .catch(error => {
