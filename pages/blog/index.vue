@@ -18,25 +18,16 @@
             <div class="card mb-4" v-for="post in posts" :key="post.id">
               <img class="card-img-top" :src="post.coverPhotoUrl" alt="Card image cap" />
               <div class="card-body">
-                <h2 class="card-title">{{post.title}}</h2>
-                <p class="card-text" v-html="$md.render(post.body)" label="Markdown Preview"></p>
                 <nuxt-link
-                  class="btn btn-primary"
                   :to="{ name: 'blog-slug', params: { slug: post.slug }}"
-                >Read More &rarr;</nuxt-link>
+                >
+                    <h2 class="card-title">{{post.title}}</h2>
+                </nuxt-link>
+                <p class="card-text" v-html="$md.render(post.excerpt)" label="Markdown Preview"></p>
               </div>
               <div class="card-footer text-muted">Posted on {{post.date}}</div>
             </div>
 
-            <!-- Pagination -->
-            <!-- <ul class="pagination justify-content-center mb-4">
-              <li class="page-item">
-                <a class="page-link" href="#">&larr; Older</a>
-              </li>
-              <li class="page-item disabled">
-                <a class="page-link" href="#">Newer &rarr;</a>
-              </li>
-            </ul>-->
           </div>
 
           <!-- Sidebar Widgets Column -->
@@ -53,89 +44,10 @@
                 </div>
               </div>
             </div>
-
-            <!-- Categories Widget -->
-            <div class="card my-4">
-              <h5 class="card-header">Categories</h5>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ul class="list-unstyled mb-0">
-                      <li>
-                        <a href="#">Web Design</a>
-                      </li>
-                      <li>
-                        <a href="#">HTML</a>
-                      </li>
-                      <li>
-                        <a href="#">Freebies</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-6">
-                    <ul class="list-unstyled mb-0">
-                      <li>
-                        <a href="#">JavaScript</a>
-                      </li>
-                      <li>
-                        <a href="#">CSS</a>
-                      </li>
-                      <li>
-                        <a href="#">Tutorials</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Side Widget -->
-            <div class="card my-4">
-              <h5 class="card-header">Side Widget</h5>
-              <div
-                class="card-body"
-              >You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!</div>
-            </div>
           </div>
         </div>
         <!-- /.row -->
       </div>
-      <!-- /.container -->
-
-      <!-- <div class="wrapper">
-        <section class="recent-blog">
-          <h2 class="section_title">Recent Articles</h2>
-          <div v-if="featuredPost" class="article featured-post">
-            <div>
-              <nuxt-link :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}">
-                <img :src="featuredPost.coverPhotoUrl" alt />
-              </nuxt-link>
-            </div>
-            <div>
-              <h2 class="title">
-                <nuxt-link
-                  :to="{ name: 'blog-slug', params: { slug: featuredPost.slug }}"
-                >{{featuredPost.title}}</nuxt-link>
-              </h2>
-            </div>
-          </div>
-
-          <div v-if="posts" class="articles">
-            <div class="article" v-for="post in posts" :key="post.title">
-              <div class="preview">
-                <div class="stretch">
-                  <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">
-                    <img :src="post.coverPhotoUrl" :alt="post.title" />
-                  </nuxt-link>
-                </div>
-              </div>
-              <h2 class="title">
-                <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">{{post.title}}</nuxt-link>
-              </h2>
-            </div>
-          </div>
-        </section>
-      </div>-->
     </main>
   </div>
 </template>
@@ -312,7 +224,7 @@ export default {
   },
   async asyncData(context) {
     // fetch the post from the API
-    let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=4");
+    let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=100");
     return blogapi
       .then(response => {
         return {

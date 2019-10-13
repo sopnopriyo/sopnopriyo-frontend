@@ -36,12 +36,17 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="6" md="6">
-                      <v-textarea outlined v-model="editedItem.body" height="100vh" label="Body"></v-textarea>
+                      <v-textarea outlined v-model="editedItem.body" height="50vh" label="Body"></v-textarea>
                     </v-col>
                     <v-col cols="6" sm="6" md="6">
-                      <div v-html="$md.render(editedItem.body)" label="Markdown Preview"></div>
+                      <div v-html="$md.render(editedItem.body)" label="Body Preview"></div>
                     </v-col>
-
+                    <v-col cols="6" sm="6" md="6">
+                      <v-textarea outlined v-model="editedItem.excerpt" height="50vh" label="Excerpt"></v-textarea>
+                    </v-col>
+                    <v-col cols="6" sm="6" md="6">
+                      <div v-html="$md.render(editedItem.excerpt)" label="Excerpt Preview"></div>
+                    </v-col>
                     <v-col cols="12" sm="12" md="12">
                       <v-menu
                         ref="menu1"
@@ -117,6 +122,10 @@
   max-width: 100%;
   overflow: hidden;
 }
+
+textarea {
+  height: 100%;
+}
 </style>
 <script>
 import axios from "axios";
@@ -163,18 +172,20 @@ export default {
     editedItem: {
       title: "",
       body: "",
+      excerpt: "",
       status: "DRAFT",
       slug: "",
-      category: "",
+      category: "General",
       date: new Date().toISOString(),
       coverPhotoUrl: ""
     },
     defaultItem: {
       title: "",
       body: "",
+      excerpt: "",
       status: "DRAFT",
       slug: "",
-      category: "",
+      category: "General",
       date: new Date().toISOString(),
       coverPhotoUrl: ""
     },
@@ -187,6 +198,9 @@ export default {
       },
       body: {
         rules: [v => !!v || "Body is required"]
+      },
+      excerpt: {
+        rules: [v => !!v || "Excerpt is required"]
       },
       status: {
         rules: [v => !!v || "Status is required"]
@@ -309,6 +323,7 @@ export default {
           title: this.editedItem.title,
           slug: this.editedItem.slug,
           body: this.editedItem.body,
+          excerpt: this.editedItem.excerpt,
           status: this.editedItem.status,
           category: this.editedItem.category,
           date: this.editedItem.date,
