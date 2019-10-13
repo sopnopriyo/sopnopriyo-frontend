@@ -7,7 +7,7 @@ const state = () => ({
     blogMenuItems: [],
     menuItems: [
         {
-          path: "/blog-category",
+          path: "/blog",
           text: "Blog",
           children: []
         },

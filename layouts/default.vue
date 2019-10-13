@@ -14,18 +14,8 @@
 
       <div class="collapse navbar-collapse" v-bind:class="{ 'show': isMenuOpen}" id="navb">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item" :class="{'dropdown': item.children}" v-for="item in items" :key="item.path">
-            
-            <div v-if="item.children !== undefined">
-                <a class="nav-link dropdown-toggle" @click="toggleBlogDropDown()" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{item.text}}
-                </a>
-                <div class="dropdown-menu" :class="{'show' : isBlogDropdownExpanded}" aria-labelledby="navbarDropdown">
-                  
-                   <nuxt-link class="dropdown-item" v-for="(child, i) in item.children" :key="i" :to="item.path+'/'+child">{{child}}</nuxt-link>
-                </div>
-            </div>
-            <nuxt-link v-else class="nav-link" :to="item.path">{{item.text}}</nuxt-link>
+          <li class="nav-item" v-for="item in items" :key="item.path">
+            <nuxt-link class="nav-link" :to="item.path">{{item.text}}</nuxt-link>
           </li>
           <li class="nav-item">
             <nuxt-link v-if="!loggedIn" class="nav-link" to="/login">
