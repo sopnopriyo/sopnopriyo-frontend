@@ -3,6 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="computedPortfolios"
+      :server-items-length="totalPostSize"
       class="elevation-1"
       :page.sync="pagination.page"
       :items-per-page="pagination.rowsPerPage"
@@ -12,9 +13,9 @@
           <v-toolbar-title>Portfolio</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <div class="flex-grow-1"></div>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="100vw">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" dark class="mb-2" v-on="on">New Post</v-btn>
+              <v-btn color="primary" dark class="mb-2" v-on="on">New Portfolio</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -28,10 +29,7 @@
                       <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="editedItem.url" label="URL"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12">
-                      <v-textarea outlined v-model="editedItem.description" label="Description"></v-textarea>
+                      <v-textarea outlined v-model="editedItem.description" auto-grow="true" label="Description"></v-textarea>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
                       <v-menu
@@ -58,7 +56,9 @@
                         <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                       </v-menu>
                     </v-col>
-
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="editedItem.url" label="URL"></v-text-field>
+                    </v-col>
                     <v-col cols="12" sm="12" md="12">
                       <v-text-field v-model="editedItem.coverPhotoUrl" label="Cover Photo URL"></v-text-field>
                     </v-col>
@@ -168,13 +168,20 @@ export default {
       return this.editedIndex === -1 ? "New Portfolio" : "Edit Portfolio";
     },
     computedPortfolios() {
-      return this.$store.state.portfolio.portfolioListResponse.content || [];
+      if (this.$store.state.portfolio.portfolioListResponse) {
+        return this.$store.state.portfolio.portfolioListResponse.content;  
+      }
     },
     token() {
       return this.$store.state.auth.auth;
     },
     computedDateFormatted() {
       return this.formatDate(this.date);
+    },
+    totalPostSize() {
+      if (this.$store.state.blog.portfolioListResponse) {
+        return this.$store.state.blog.portfolioListResponse.totalElements || 0;
+      }
     }
   },
 
