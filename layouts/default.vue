@@ -9,7 +9,8 @@
         data-target="#navb"
         @click="toggleNavMenu()"
       >
-        <span class="navbar-toggler-icon"></span>
+        <i class="fa fa-bars" v-if="!isMenuOpen"></i>
+        <i class="fa fa-times" v-else></i>
       </button>
 
       <div class="collapse navbar-collapse" v-bind:class="{ 'show': isMenuOpen}" id="navb">
@@ -121,18 +122,17 @@ export default {
       }
     ],
     isMenuOpen: false,
-    isBlogDropdownExpanded: false,
+    isBlogDropdownExpanded: false
   }),
-  created(){
-    this.$store
-        .dispatch("header/setMenu");
+  created() {
+    this.$store.dispatch("header/setMenu");
   },
   computed: {
     loggedIn() {
       return this.$store.state.auth.auth;
     },
     items() {
-      return this.$store.getters['header/allMenuItems'];
+      return this.$store.getters["header/allMenuItems"];
     }
   },
   methods: {
