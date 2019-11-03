@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <!-- Post Content Column -->
-      <div class="col-lg-8">
+      <div class="col-12">
         <!-- Title -->
         <h1 class="mt-4">{{post.title}}</h1>
 
@@ -27,22 +27,6 @@
 
         <!-- Post Content -->
         <div v-html="$md.render(post.body)" label="Markdown Preview"></div>
-      </div>
-
-      <!-- Sidebar Widgets Column -->
-      <div class="col-md-4">
-        <!-- Search Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Search</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for..." />
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <!-- /.row -->

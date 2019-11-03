@@ -1,6 +1,6 @@
 <template>
   <div id="__container">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
       <nuxt-link class="navbar-brand" to="/">Sopnopriyo</nuxt-link>
       <button
         class="navbar-toggler navbar-toggler-right"
@@ -53,8 +53,7 @@
 </template>
 <style lang="scss">
 .content {
-  position: relative;
-  min-height: 80vh;
+  min-height: 82vh;
 }
 .social-footer {
   padding: 1rem;

@@ -8,18 +8,16 @@
     <article>
       <div class="container">
         <div class="row">
-          <div
-            class="col-md-4 col-xs-12 card"
-            v-for="portfolio in computedPortfolios"
-            :key="portfolio.title"
-          >
-            <img class="card-img-top img-fluid" :src="portfolio.coverPhotoUrl" alt="Card image cap" />
-            <div class="card-block">
-              <h4 class="card-title">{{ portfolio.title }}</h4>
-              <p class="card-text">{{portfolio.description}}</p>
-              <p class="card-text">
-                <small class="text-muted">Last updated 3 mins ago</small>
-              </p>
+          <div class="col-12 col-sm-8 col-md-6 col-lg-4 d-flex align-items-stretch" v-for="portfolio in computedPortfolios" :key="portfolio.id">
+            <div class="card">
+              <img class="card-img" :src="portfolio.coverPhotoUrl" :alt="portfolio.title">
+              <div class="card-body">
+                <h4 class="card-title">{{portfolio.title}}</h4>
+                <p class="card-text" v-html="$md.render(portfolio.description)"/>
+              </div>
+              <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
+                <div class="views">Posted on {{portfolio.date}}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -28,34 +26,6 @@
   </div>
 </template>
 <style lang="scss" scoped>
-pre {
-  white-space: pre-wrap; /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
-  text-align: justify;
-  text-justify: inter-word;
-  font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman",
-    Times, serif;
-  letter-spacing: 0.01rem;
-  // font-weight: 400;
-  // font-style: normal;
-  font-size: 18px;
-  // line-height: 1.58;
-  // letter-spacing: -.003em;
-}
-
-.title-text {
-  position: absolute;
-  bottom: 0;
-  background: rgb(0, 0, 0); /* Fallback color */
-  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
-  color: #f1f1f1;
-  width: 100%;
-  border-radius: 3px;
-  padding: 3px;
-}
 </style>
 
 <script>

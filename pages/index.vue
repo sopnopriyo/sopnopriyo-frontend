@@ -1,96 +1,58 @@
 <template>
   <div>
-    <header class="jumbotron text-center">
-      <div class="header-content">
-        <h1>
-          Tech research findings, reviews, stories and updates from
-          <nuxt-link to="/blog">Sopnopriyo !</nuxt-link>
-        </h1>
+    <header class="masthead">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-xs-12 align-self-center">
+            <h1>Hi, I'm Shahin. I'm a Software Engineer based in Singapore.</h1>
+              <nuxt-link 
+                      class="btn btn-info"
+                      to="/blog">
+                      Learn More
+                  </nuxt-link>
+          </div>
+          <div class="col-md-8 col-xs-12">
+            <img  class="img-fluid" src="~/assets/images/shahin-at-work.png" alt="Shahin at Work">
+          </div>
+        </div>
       </div>
     </header>
     <main>
-      <!-- Page Content -->
       <div class="container">
-        <div class="row">
-          <!-- Blog Entries Column -->
-          <div class="col-md-8">
-            <!-- Blog Post -->
-            <div class="card mb-4" v-for="post in posts" :key="post.id">
-              <img class="card-img-top" :src="post.coverPhotoUrl" alt="Card image cap" />
-              <div class="card-body">
-                 <nuxt-link
-                  :to="{ name: 'blog-slug', params: { slug: post.slug }}"
-                >
-                    <h2 class="card-title">{{post.title}}</h2>
-                </nuxt-link>
-                <p class="card-text" v-html="$md.render(post.excerpt)" label="Markdown Preview"></p>
-              </div>
-              <div class="card-footer text-muted">Posted on {{post.date}}</div>
-            </div>
-          </div>
-
-          <!-- Sidebar Widgets Column -->
-          <div class="col-md-4">
-            <!-- Search Widget -->
-            <div class="card my-4">
-              <h5 class="card-header">Search</h5>
-              <div class="card-body">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for..." />
-                  <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button">Go!</button>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Categories Widget -->
-            <!-- <div class="card my-4">
-              <h5 class="card-header">Categories</h5>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ul class="list-unstyled mb-0">
-                      <li>
-                        <a href="#">Web Design</a>
-                      </li>
-                      <li>
-                        <a href="#">HTML</a>
-                      </li>
-                      <li>
-                        <a href="#">Freebies</a>
-                      </li>
-                    </ul>
+        <!-- Blog Post Section -->
+        <section>
+          <h2>Latest Posts</h2>
+            <div  class="row">
+              <div class="col-12 col-sm-8 col-md-6 col-lg-4 d-flex align-items-stretch" v-for="post in posts" :key="post.id">
+                <div class="card">
+                  <img class="card-img" :src="post.coverPhotoUrl" :alt="post.title">
+                  <div class="card-body">
+                    <nuxt-link
+                        :to="{ name: 'blog-slug', params: { slug: post.slug }}">
+                        <h4 class="card-title">{{post.title}}</h4>
+                    </nuxt-link>
+                    <p class="card-text" v-html="$md.render(post.excerpt)"/>
+                    <nuxt-link 
+                        class="btn btn-info"
+                        :to="{ name: 'blog-slug', params: { slug: post.slug }}">
+                        Read More
+                    </nuxt-link>
                   </div>
-                  <div class="col-lg-6">
-                    <ul class="list-unstyled mb-0">
-                      <li>
-                        <a href="#">JavaScript</a>
-                      </li>
-                      <li>
-                        <a href="#">CSS</a>
-                      </li>
-                      <li>
-                        <a href="#">Tutorials</a>
-                      </li>
-                    </ul>
+                  <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
+                    <div class="views">Posted on {{post.date}}</div>
                   </div>
                 </div>
               </div>
-            </div> -->
-            <!-- <CategoryWidget>
-            </CategoryWidget> -->
+            </div>
+        </section>
+        <hr>
 
-            <!-- Side Widget -->
-            <!-- <div class="card my-4">
-              <h5 class="card-header">Side Widget</h5>
-              <div
-                class="card-body"
-              >You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!</div>
-            </div> -->
+        <!-- Github Activity Section -->
+        <section>
+          <h2>Github Updates</h2>
+          <div>
           </div>
-        </div>
-        <!-- /.row -->
+        </section>
       </div>
     </main>
   </div>
@@ -99,132 +61,31 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
-.wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
+.masthead {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.card-img {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
-.section_title {
-  margin-top: 3rem;
-  margin-bottom: 4rem;
+.card-title {
+  margin-bottom: 0.3rem;
 }
 
-img {
-  width: 100%;
-  height: auto;
-  margin: 0;
+.cat {
+  display: inline-block;
+  margin-bottom: 1rem;
 }
 
-.featured-post {
-  flex-direction: row !important;
-  padding: 0px !important;
-
-  @include sm {
-    flex-direction: column !important;
-  }
-
-  @include md {
-    flex-direction: row;
-  }
-
-  @include lg {
-    flex-direction: column;
-  }
-
-  img {
-    width: 97%;
-    height: 100%;
-
-    @include sm {
-      width: 100%;
-    }
-
-    @include md {
-      width: 97%;
-    }
-
-    @include lg {
-      width: 97%;
-    }
-  }
-}
-.articles {
-  width: 100%;
-  display: grid;
-  grid-gap: 25px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  flex-wrap: wrap;
-  margin-bottom: 5rem;
+.fa-users {
+  margin-left: 1rem;
 }
 
-.article {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 0;
-  flex-grow: 1;
-  padding: 2rem;
-  background-color: #e6e8eb;
-  margin-top: 3rem;
-  &:hover {
-    img {
-      transform: scale(1.05);
-    }
-
-    .read_more {
-      opacity: 1;
-      z-index: 1;
-    }
-
-    .author {
-      opacity: 0;
-      z-index: -1;
-    }
-  }
-
-  a {
-    color: #333;
-  }
-
-  .preview {
-    position: relative;
-    margin-bottom: 1.3rem;
-    overflow: hidden;
-    margin-top: -4rem;
-    width: 100%;
-    padding-bottom: 50%;
-    .stretch {
-      position: absolute;
-    }
-    img {
-      vertical-align: middle;
-      transition: all 0.25s ease-in-out;
-    }
-  }
-
-  .cat {
-    margin-bottom: 1rem;
-    padding: 0.4rem 0.5rem;
-    align-self: flex-start;
-    width: fit-content;
-    a {
-      color: #fff;
-      text-decoration: none;
-    }
-    transition: all 0.3s;
-  }
-
-  .title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-
-    a {
-      text-decoration: none;
-    }
-  }
+.card-footer {
+  font-size: 0.8rem;
 }
 </style>
 <script>
@@ -268,7 +129,7 @@ export default {
   },
   async asyncData(context) {
     // fetch the post from the API
-    let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=4");
+    let blogapi = context.app.$axios.$get("/api/blogs?sort=date,desc&size=3");
     return blogapi
      .then(response => {
         let content = response.content;
