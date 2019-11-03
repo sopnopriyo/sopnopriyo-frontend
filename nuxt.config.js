@@ -49,8 +49,7 @@ name: "og:image",
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' },
-      { rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' },
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' }
     ],
     script: [
     ],
@@ -71,10 +70,6 @@ name: "og:image",
     '@/assets/css/main.scss'
   ],
   styleResources:{
-    scss: [
-      '@/assets/css/_breakpoints.scss',
-      '@/assets/css/_mixins.scss',
-     ]
   },
   generate: {
     subFolders: true
