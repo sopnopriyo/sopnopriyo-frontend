@@ -22,7 +22,7 @@
               </nuxt-link>
               <p class="card-text" v-html="$md.render(post.excerpt)"/>
               <nuxt-link 
-                  class="btn btn-info"
+                  class="btn btn-primary"
                   :to="{ name: 'blog-slug', params: { slug: post.slug }}">
                   Read More
               </nuxt-link>

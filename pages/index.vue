@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-md-4 col-xs-12 align-self-center">
             <h1>Hi, I'm Shahin. I'm a Software Engineer based in Singapore.</h1>
-            <nuxt-link class="btn btn-info" to="/blog">Learn More</nuxt-link>
+            <nuxt-link class="btn btn-primary" to="/blog">Learn More</nuxt-link>
           </div>
           <div class="col-md-8 col-xs-12">
             <img class="img-fluid" src="~/assets/images/shahin-at-work.png" alt="Shahin at Work" />
@@ -32,7 +32,7 @@
                   </nuxt-link>
                   <p class="card-text" v-html="$md.render(post.excerpt)" />
                   <nuxt-link
-                    class="btn btn-info"
+                    class="btn btn-primary"
                     :to="{ name: 'blog-slug', params: { slug: post.slug }}"
                   >Read More</nuxt-link>
                 </div>

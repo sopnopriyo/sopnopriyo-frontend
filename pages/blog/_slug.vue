@@ -33,46 +33,36 @@
   </div>
   <!-- /.container -->
 </template>
-<style lang="scss" scoped>
-pre {
-  white-space: pre-wrap;
-  /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap;
-  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;
-  /* Opera 4-6 */
-  white-space: -o-pre-wrap;
-  /* Opera 7 */
-  word-wrap: break-word;
-  /* Internet Explorer 5.5+ */
-  text-align: justify;
-  text-justify: inter-word;
-  font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman",
-    Times, serif;
-  letter-spacing: 0.01rem;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 22px;
-  line-height: 1.58;
-  letter-spacing: -0.003em;
+<style lang="scss">
+dl, ol, ul  {
+  margin-left: 15px;
 }
+pre{
+  counter-reset:line-numbering;
+  background:#2c3e50;
+  padding:12px 0px 14px 13px;
+  color:#ecf0f1;
+  line-height:140%;
+    .line::before {
+      content: counter(line-numbering);
+      counter-increment: line-numbering;
+      padding-right: 1em;
+      /* space after numbers */
+      padding-left:8px;
+      width: 1.5em;
+      text-align: right;
+      opacity: 0.5;
+      color:white;
+  }
 
-.title-text {
-  position: absolute;
-  bottom: 0;
-  background: rgb(0, 0, 0);
-  /* Fallback color */
-  background: rgba(0, 0, 0, 0.4);
-  /* Black background with 0.5 opacity */
-  color: #f1f1f1;
-  width: 100%;
-  border-radius: 3px;
-  padding: 3px;
-  font-size: 30px;
+  code {
+    margin: 10px;
+  }
 }
 
 img {
   width: 100%;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 </style>
 <script>
