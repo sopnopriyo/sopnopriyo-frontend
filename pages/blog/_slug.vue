@@ -26,7 +26,7 @@
         <hr />
 
         <!-- Post Content -->
-        <div v-html="$md.render(post.body)" label="Markdown Preview"></div>
+        <div v-html="$md.render(post.body)" label="Markdown Preview" class="content-body"></div>
       </div>
     </div>
     <!-- /.row -->
@@ -70,6 +70,10 @@ pre {
   padding: 3px;
   font-size: 30px;
 }
+
+img {
+  width: 100%;
+}
 </style>
 <script>
 export default {
@@ -112,8 +116,13 @@ export default {
     return context.app.$axios
       .$get(`/api/blogs/${context.params.slug}`)
       .then(res => {
-         const date = new Date(res.date);
-         res.date = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate() +", "+ date.getFullYear();
+        const date = new Date(res.date);
+        res.date =
+          date.toLocaleString("default", { month: "short" }) +
+          " " +
+          date.getDate() +
+          ", " +
+          date.getFullYear();
         return { post: res };
       });
   }
