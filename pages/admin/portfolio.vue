@@ -179,8 +179,8 @@ export default {
       return this.formatDate(this.date);
     },
     totalPostSize() {
-      if (this.$store.state.blog.portfolioListResponse) {
-        return this.$store.state.blog.portfolioListResponse.totalElements || 0;
+      if (this.$store.state.portfolio.portfolioListResponse) {
+        return this.$store.state.portfolio.portfolioListResponse.totalElements || 0;
       }
     }
   },
