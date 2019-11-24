@@ -67,9 +67,12 @@ name: "og:image",
   */
   css: [
     // SCSS file in the project
-    '@/assets/css/main.scss'
+    //'@/assets/css/main.scss'
   ],
   styleResources:{
+    scss: [
+      './assets/scss/bootstrap.scss',
+    ]
   },
   generate: {
     subFolders: true

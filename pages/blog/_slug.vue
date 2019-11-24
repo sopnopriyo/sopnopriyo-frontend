@@ -33,26 +33,28 @@
   </div>
   <!-- /.container -->
 </template>
-<style lang="scss">
-dl, ol, ul  {
+<style lang="scss" scoped>
+dl,
+ol,
+ul {
   margin-left: 15px;
 }
-pre{
-  counter-reset:line-numbering;
-  background:#2c3e50;
-  padding:12px 0px 14px 13px;
-  color:#ecf0f1;
-  line-height:140%;
-    .line::before {
-      content: counter(line-numbering);
-      counter-increment: line-numbering;
-      padding-right: 1em;
-      /* space after numbers */
-      padding-left:8px;
-      width: 1.5em;
-      text-align: right;
-      opacity: 0.5;
-      color:white;
+pre {
+  counter-reset: line-numbering;
+  background: #2c3e50;
+  padding: 12px 0px 14px 13px;
+  color: #ecf0f1;
+  line-height: 140%;
+  .line::before {
+    content: counter(line-numbering);
+    counter-increment: line-numbering;
+    padding-right: 1em;
+    /* space after numbers */
+    padding-left: 8px;
+    width: 1.5em;
+    text-align: right;
+    opacity: 0.5;
+    color: white;
   }
 
   code {
@@ -62,7 +64,7 @@ pre{
 
 img {
   width: 100%;
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 </style>
 <script>

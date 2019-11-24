@@ -1,40 +1,42 @@
 <template>
-  <section class="form-box">
-    <h1>Contact Me</h1>
-    <form @submit="save()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input v-model="contact.name" class="form-control" id="name" type="text" name="Name" />
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input v-model="contact.email" class="form-control" id="email" type="email" name="Email" />
-      </div>
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea v-model="contact.message" class="form-control" id="message" name="Message"></textarea>
-      </div>
-      <input class="btn btn-primary" type="submit" value="Submit" />
-    </form>
-  </section>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <section class="col-xs-12 col-md-6 contact-form">
+        <h1>Contact Me</h1>
+        <form @submit="save()">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input v-model="contact.name" class="form-control" id="name" type="text" name="Name" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              v-model="contact.email"
+              class="form-control"
+              id="email"
+              type="email"
+              name="Email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea v-model="contact.message" class="form-control" id="message" name="Message"></textarea>
+          </div>
+          <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Send" />
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
 </template>
 <style lang="scss" scoped>
-.form-box {
-  max-width: 500px;
-  margin: auto;
-  padding: 50px;
-  background: #ffffff;
-  border: 10px solid #f2f2f2;
+.row {
+  height: 80vh;
 }
 
-h1,
-p {
-  text-align: center;
-}
-
-input,
-textarea {
-  width: 100%;
+.contact-form {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 </style>
 <script>

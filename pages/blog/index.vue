@@ -12,25 +12,29 @@
       <!-- Page Content -->
       <div class="container">
         <div class="row">
-          <div class="col-12 col-sm-8 col-md-6 col-lg-4 d-flex align-items-stretch" v-for="post in posts" :key="post.id">
+          <div
+            class="col-12 col-sm-8 col-md-6 col-lg-4 d-flex align-items-stretch"
+            v-for="post in posts"
+            :key="post.id"
+          >
             <div class="card">
-            <img class="card-img" :src="post.coverPhotoUrl" :alt="post.title">
-            <div class="card-body">
-              <nuxt-link
-                  :to="{ name: 'blog-slug', params: { slug: post.slug }}">
+              <img class="card-img" :src="post.coverPhotoUrl" :alt="post.title" />
+              <div class="card-body">
+                <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">
                   <h4 class="card-title">{{post.title}}</h4>
-              </nuxt-link>
-              <p class="card-text" v-html="$md.render(post.excerpt)"/>
-              <nuxt-link 
-                  class="btn btn-primary"
-                  :to="{ name: 'blog-slug', params: { slug: post.slug }}">
-                  Read More
-              </nuxt-link>
+                </nuxt-link>
+                <div
+                  class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0"
+                >
+                  <div class="views">Posted on {{post.date}}</div>
+                </div>
+                <p class="card-text" v-html="$md.render(post.excerpt)" />
+                <nuxt-link
+                  class="card-read-more"
+                  :to="{ name: 'blog-slug', params: { slug: post.slug }}"
+                >Read More</nuxt-link>
+              </div>
             </div>
-            <div class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
-              <div class="views">Posted on {{post.date}}</div>
-            </div>
-          </div>
           </div>
         </div>
       </div>
@@ -41,27 +45,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
-.card-img {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
-.card-title {
-  margin-bottom: 0.3rem;
-}
-
-.cat {
-  display: inline-block;
-  margin-bottom: 1rem;
-}
-
-.fa-users {
-  margin-left: 1rem;
-}
-
-.card-footer {
-  font-size: 0.8rem;
-}
 </style>
 <script>
 //import axios from "axios";
@@ -110,8 +93,13 @@ export default {
         let content = response.content;
 
         for (var i = 0; i < content.length; i++) {
-            const date = new Date(content[i].date);
-            content[i].date = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate() +", "+ date.getFullYear();
+          const date = new Date(content[i].date);
+          content[i].date =
+            date.toLocaleString("default", { month: "short" }) +
+            " " +
+            date.getDate() +
+            ", " +
+            date.getFullYear();
         }
         return {
           posts: content

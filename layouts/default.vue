@@ -1,35 +1,37 @@
 <template>
   <div id="__container">
-    <nav class="navbar navbar-expand-lg">
-      <nuxt-link class="navbar-brand" to="/">Sopnopriyo</nuxt-link>
-      <button
-        class="navbar-toggler navbar-toggler-right"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navb"
-        @click="toggleNavMenu()"
-      >
-        <i class="fa fa-bars" v-if="!isMenuOpen"></i>
-        <i class="fa fa-times" v-else></i>
-      </button>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg">
+        <nuxt-link class="navbar-brand" to="/">Sopnopriyo</nuxt-link>
+        <button
+          class="navbar-toggler navbar-toggler-right"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navb"
+          @click="toggleNavMenu()"
+        >
+          <i class="fa fa-bars" v-if="!isMenuOpen"></i>
+          <i class="fa fa-times" v-else></i>
+        </button>
 
-      <div class="collapse navbar-collapse" v-bind:class="{ 'show': isMenuOpen}" id="navb">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item" v-for="item in items" :key="item.path">
-            <nuxt-link class="nav-link" :to="item.path">{{item.text}}</nuxt-link>
-          </li>
-          <li class="nav-item">
-            <nuxt-link v-if="!loggedIn" class="nav-link" to="/login">
-              <strong>Login</strong>
-            </nuxt-link>
-            <nuxt-link v-else class="nav-link" to="#" @click="logout()">
-              Sign Out
-              <i class="fa fa-sign-out"></i>
-            </nuxt-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+        <div class="collapse navbar-collapse" v-bind:class="{ 'show': isMenuOpen}" id="navb">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item" v-for="item in items" :key="item.path">
+              <nuxt-link class="nav-link" :to="item.path">{{item.text}}</nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link v-if="!loggedIn" class="nav-link" to="/login">
+                <strong>Login</strong>
+              </nuxt-link>
+              <nuxt-link v-else class="nav-link" to="#" @click="logout()">
+                Sign Out
+                <i class="fa fa-sign-out"></i>
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
 
     <main class="content">
       <router-view></router-view>
@@ -53,6 +55,9 @@
   </div>
 </template>
 <style lang="scss">
+.show {
+  display: block;
+}
 .content {
   min-height: 82vh;
 }

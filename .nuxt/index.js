@@ -4,7 +4,7 @@ import ClientOnly from 'vue-client-only'
 import NoSsr from 'vue-no-ssr'
 import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
-import NuxtError from '..\\layouts\\error.vue'
+import NuxtError from '../layouts/error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
 import { setContext, getLocation, getRouteData, normalizeError } from './utils'
@@ -12,23 +12,21 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_workbox_40ff75e9 from 'nuxt_plugin_workbox_40ff75e9' // Source: .\\workbox.js (mode: 'client')
-import nuxt_plugin_nuxticons_92ed4d4a from 'nuxt_plugin_nuxticons_92ed4d4a' // Source: .\\nuxt-icons.js (mode: 'all')
-import nuxt_plugin_plugin_fe57b16c from 'nuxt_plugin_plugin_fe57b16c' // Source: .\\vuetify\\plugin.js (mode: 'all')
-import nuxt_plugin_markdownit_c9e4e04c from 'nuxt_plugin_markdownit_c9e4e04c' // Source: .\\markdown-it.js (mode: 'all')
-import nuxt_plugin_axios_5ca2d00d from 'nuxt_plugin_axios_5ca2d00d' // Source: .\\axios.js (mode: 'all')
-import nuxt_plugin_plugin_4827c1fc from 'nuxt_plugin_plugin_4827c1fc' // Source: .\\auth\\plugin.js (mode: 'all')
+import nuxt_plugin_workbox_b5c16894 from 'nuxt_plugin_workbox_b5c16894' // Source: ./workbox.js (mode: 'client')
+import nuxt_plugin_nuxticons_4b3a946e from 'nuxt_plugin_nuxticons_4b3a946e' // Source: ./nuxt-icons.js (mode: 'all')
+import nuxt_plugin_plugin_b6da832c from 'nuxt_plugin_plugin_b6da832c' // Source: ./vuetify/plugin.js (mode: 'all')
+import nuxt_plugin_markdownit_c6f891b2 from 'nuxt_plugin_markdownit_c6f891b2' // Source: ./markdown-it.js (mode: 'all')
+import nuxt_plugin_axios_1e67b51a from 'nuxt_plugin_axios_1e67b51a' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_plugin_58b506d6 from 'nuxt_plugin_plugin_58b506d6' // Source: ./auth/plugin.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
-
 // TODO: Remove in Nuxt 3: <NoSsr>
 Vue.component(NoSsr.name, {
   ...NoSsr,
-  render (h, ctx) {
+  render(h, ctx) {
     if (process.client && !NoSsr._warned) {
       NoSsr._warned = true
-
       console.warn(`<no-ssr> has been deprecated and will be removed in Nuxt 3, please use <client-only> instead`)
     }
     return NoSsr.render(h, ctx)
@@ -44,11 +42,17 @@ Vue.component('NChild', NuxtChild)
 // Component: <Nuxt>`
 Vue.component(Nuxt.name, Nuxt)
 
-Vue.use(Meta, {"keyName":"head","attribute":"data-n-head","ssrAttribute":"data-n-head-ssr","tagIDKeyName":"hid"})
+// vue-meta configuration
+Vue.use(Meta, {
+  keyName: 'head', // the component option name that vue-meta looks for meta info on.
+  attribute: 'data-n-head', // the attribute name vue-meta adds to the tags it observes
+  ssrAttribute: 'data-n-head-ssr', // the attribute name that lets vue-meta know that meta info has already been server-rendered
+  tagIDKeyName: 'hid' // the property name that vue-meta uses to determine whether to overwrite or append a tag
+})
 
 const defaultTransition = {"name":"page","mode":"out-in","appear":false,"appearClass":"appear","appearActiveClass":"appear-active","appearToClass":"appear-to"}
 
-async function createApp (ssrContext) {
+async function createApp(ssrContext) {
   const router = await createRouter(ssrContext)
 
   const store = createStore(ssrContext)
@@ -64,12 +68,12 @@ async function createApp (ssrContext) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    store,
     router,
+    store,
     nuxt: {
       defaultTransition,
       transitions: [ defaultTransition ],
-      setTransitions (transitions) {
+      setTransitions(transitions) {
         if (!Array.isArray(transitions)) {
           transitions = [ transitions ]
         }
@@ -86,10 +90,9 @@ async function createApp (ssrContext) {
         this.$options.nuxt.transitions = transitions
         return transitions
       },
-
       err: null,
       dateErr: null,
-      error (err) {
+      error(err) {
         err = err || null
         app.context._errored = Boolean(err)
         err = err ? normalizeError(err) : null
@@ -97,9 +100,7 @@ async function createApp (ssrContext) {
         nuxt.dateErr = Date.now()
         nuxt.err = err
         // Used in src/server.js
-        if (ssrContext) {
-          ssrContext.nuxt.error = err
-        }
+        if (ssrContext) ssrContext.nuxt.error = err
         return err
       }
     },
@@ -121,10 +122,10 @@ async function createApp (ssrContext) {
 
   // Set context to app.context
   await setContext(app, {
-    store,
     route,
     next,
     error: app.nuxt.error.bind(app),
+    store,
     payload: ssrContext ? ssrContext.payload : undefined,
     req: ssrContext ? ssrContext.req : undefined,
     res: ssrContext ? ssrContext.res : undefined,
@@ -133,13 +134,8 @@ async function createApp (ssrContext) {
   })
 
   const inject = function (key, value) {
-    if (!key) {
-      throw new Error('inject(key, value) has no key provided')
-    }
-    if (value === undefined) {
-      throw new Error('inject(key, value) has no value provided')
-    }
-
+    if (!key) throw new Error('inject(key, value) has no key provided')
+    if (typeof value === 'undefined') throw new Error('inject(key, value) has no value provided')
     key = '$' + key
     // Add into app
     app[key] = value
@@ -149,15 +145,13 @@ async function createApp (ssrContext) {
 
     // Check if plugin not already installed
     const installKey = '__nuxt_' + key + '_installed__'
-    if (Vue[installKey]) {
-      return
-    }
+    if (Vue[installKey]) return
     Vue[installKey] = true
     // Call Vue.use() to install the plugin into vm
     Vue.use(() => {
       if (!Vue.prototype.hasOwnProperty(key)) {
         Object.defineProperty(Vue.prototype, key, {
-          get () {
+          get() {
             return this.$root.$options[key]
           }
         })
@@ -174,28 +168,28 @@ async function createApp (ssrContext) {
 
   // Plugin execution
 
-  if (process.client && typeof nuxt_plugin_workbox_40ff75e9 === 'function') {
-    await nuxt_plugin_workbox_40ff75e9(app.context, inject)
+  if (process.client && typeof nuxt_plugin_workbox_b5c16894 === 'function') {
+    await nuxt_plugin_workbox_b5c16894(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_nuxticons_92ed4d4a === 'function') {
-    await nuxt_plugin_nuxticons_92ed4d4a(app.context, inject)
+  if (typeof nuxt_plugin_nuxticons_4b3a946e === 'function') {
+    await nuxt_plugin_nuxticons_4b3a946e(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_plugin_fe57b16c === 'function') {
-    await nuxt_plugin_plugin_fe57b16c(app.context, inject)
+  if (typeof nuxt_plugin_plugin_b6da832c === 'function') {
+    await nuxt_plugin_plugin_b6da832c(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_markdownit_c9e4e04c === 'function') {
-    await nuxt_plugin_markdownit_c9e4e04c(app.context, inject)
+  if (typeof nuxt_plugin_markdownit_c6f891b2 === 'function') {
+    await nuxt_plugin_markdownit_c6f891b2(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_axios_5ca2d00d === 'function') {
-    await nuxt_plugin_axios_5ca2d00d(app.context, inject)
+  if (typeof nuxt_plugin_axios_1e67b51a === 'function') {
+    await nuxt_plugin_axios_1e67b51a(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_plugin_4827c1fc === 'function') {
-    await nuxt_plugin_plugin_4827c1fc(app.context, inject)
+  if (typeof nuxt_plugin_plugin_58b506d6 === 'function') {
+    await nuxt_plugin_plugin_58b506d6(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first
@@ -216,8 +210,8 @@ async function createApp (ssrContext) {
   }
 
   return {
-    store,
     app,
+    store,
     router
   }
 }

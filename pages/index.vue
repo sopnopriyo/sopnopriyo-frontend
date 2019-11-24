@@ -4,8 +4,12 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4 col-xs-12 align-self-center">
-            <h1>Hi, I'm Shahin. I'm a Software Engineer based in Singapore.</h1>
-            <nuxt-link class="btn btn-primary" to="/blog">Learn More</nuxt-link>
+            <h1 class="header-1">Hi, I'm Shahin.</h1>
+            <h3 class="header-2">
+              I'm a
+              <b>Software</b> Engineer based in Singapore.
+            </h3>
+            <nuxt-link class="btn btn-primary cta" to="/blog">Learn More</nuxt-link>
           </div>
           <div class="col-md-8 col-xs-12">
             <img class="img-fluid" src="~/assets/images/shahin-at-work.png" alt="Shahin at Work" />
@@ -30,16 +34,16 @@
                   <nuxt-link :to="{ name: 'blog-slug', params: { slug: post.slug }}">
                     <h4 class="card-title">{{post.title}}</h4>
                   </nuxt-link>
+                  <div
+                    class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0"
+                  >
+                    <div class="views">Posted on {{post.date}}</div>
+                  </div>
                   <p class="card-text" v-html="$md.render(post.excerpt)" />
                   <nuxt-link
-                    class="btn btn-primary"
+                    class="card-read-more"
                     :to="{ name: 'blog-slug', params: { slug: post.slug }}"
                   >Read More</nuxt-link>
-                </div>
-                <div
-                  class="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0"
-                >
-                  <div class="views">Posted on {{post.date}}</div>
                 </div>
               </div>
             </div>
@@ -54,35 +58,22 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
-h1 {
-  font-size: 35px;
+.header-1 {
+  font-size: 40px;
+}
+.header-2 {
+  font-size: 18px;
+}
+
+.cta {
+  margin-top: 15px;
 }
 .masthead {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-.card-img {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
 
-.card-title {
-  margin-bottom: 0.3rem;
-}
-
-.cat {
-  display: inline-block;
-  margin-bottom: 1rem;
-}
-
-.fa-users {
-  margin-left: 1rem;
-}
-
-.card-footer {
-  font-size: 0.8rem;
-}
 </style>
 <script>
 import CategoryWidget from "./../components/CategoryWidget";
